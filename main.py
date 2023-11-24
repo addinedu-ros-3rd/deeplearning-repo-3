@@ -4,7 +4,7 @@ import argparse
 from ultralytics import YOLO
 import supervision as sv
 import numpy as np
-from detector import detect_fruit_in_box
+from detector import Detector
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -23,11 +23,13 @@ def main():
     args = parse_arguments()
     frame_width, frame_height = args.webcam_resolution
 
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, frame_width)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, frame_height)
 
     model = YOLO("yolov8l.pt")
+
+    detector = Detector(model)
 
 
     while True:
@@ -35,10 +37,10 @@ def main():
 
         if ret:
             try:
-                frame = detect_fruit_in_box(model, frame)
+                frame = detector.detect_fruit_in_box(frame)
             except Exception as error:
                 print(type(error).__name__, "–", error)
-                continue
+                # continue
             
             # zone.trigger(detections=detections)
             # frame = zone_annotator.annotate(scene=frame)      
