@@ -67,7 +67,12 @@ def onMouse(event, x, y, flags, params):
                 break
 
 if __name__ == "__main__":
-    src = cv2.imread("./data/scanned.jpg")
+    cam = cv2.VideoCapture(1)
+
+    while not cam.isOpened():
+        i=0
+
+    _, src = cam.read()
 
     if src is None:
         print("Image Not Found")
