@@ -4,7 +4,7 @@ import numpy as np
 
 class Square:
     def __init__(self, h, w):
-        margin = 4 * h / 5
+        margin = 50
         self.srcQuad = [[margin, margin], [margin, h-margin], [w-margin, h-margin], [w-margin, margin]]
         self.srcQuad = np.array(self.srcQuad, np.float32)
         self.dragSrc = [False] * 4
@@ -37,9 +37,7 @@ def drawROI(img):
 
 
 def onMouse(event, x, y, flags, params):
-    global src, squares
-    # edges = srcQuad[:4]
-    # centers = srcQuad[4:]
+    global src, squares, w, h
 
     if event == cv2.EVENT_LBUTTONDOWN:
         for sq in squares:
@@ -65,6 +63,8 @@ def onMouse(event, x, y, flags, params):
                     dy = y - sq.ptOld[1]
 
                     sq.srcQuad[i] += (dx, dy)
+                    sq.srcQuad[i][0] = np.clip(sq.srcQuad[i][0], 0, w)
+                    sq.srcQuad[i][1] = np.clip(sq.srcQuad[i][1], 0, h)
 
                     cpy = drawROI(src)
                     cv2.imshow('img', cpy)
@@ -75,11 +75,11 @@ def onMouse(event, x, y, flags, params):
 
 
 if __name__ == "__main__":
-    cam = cv2.VideoCapture(1)
-    width = 1280
-    height = 720
-    cam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+    cam = cv2.VideoCapture("test.png")
+    # width = 1280
+    # height = 720
+    # cam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    # cam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
     while not cam.isOpened():
         i=0
