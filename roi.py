@@ -4,8 +4,6 @@ import numpy as np
 
 class Square:
     def __init__(self, h, w):
-        dw = 100
-        dh = round(dw * 297 / 210)  # A4 크기 : 210x297mm
         margin = 4 * h / 5
         self.srcQuad = [[margin, margin], [margin, h-margin], [w-margin, h-margin], [w-margin, margin]]
         self.srcQuad = np.array(self.srcQuad, np.float32)
@@ -78,6 +76,10 @@ def onMouse(event, x, y, flags, params):
 
 if __name__ == "__main__":
     cam = cv2.VideoCapture(1)
+    width = 1280
+    height = 720
+    cam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
     while not cam.isOpened():
         i=0
@@ -89,6 +91,7 @@ if __name__ == "__main__":
         sys.exit()
 
     h, w = src.shape[:2]
+    print(h, w)
 
     squares = [Square(h, w)]
 
@@ -113,8 +116,8 @@ if __name__ == "__main__":
             
         elif key == ord("s"):
             with open("save.txt", "w") as f:
-                for sq in squares:
-                    f.write(sq.savePoints())
+                for i, sq in enumerate(squares):
+                    f.write(str(i) + " " + sq.savePoints())
             
             cv2.destroyWindow('img')
             sys.exit()
@@ -123,7 +126,9 @@ if __name__ == "__main__":
             squares = []
             with open("save.txt", "r") as f:
                 for line in f.readlines():
-                    a = np.array(list(map(np.float32, line.split())))
+                    l = line.split()
+                    num, points = l[0], l[1:]
+                    a = np.array(list(map(np.float32, points)))
                     a = a.reshape((4, 2))
                     sq = Square(h, w)
                     sq.loadPoints(a)
@@ -133,4 +138,3 @@ if __name__ == "__main__":
 
 
     cv2.destroyAllWindows()
-
