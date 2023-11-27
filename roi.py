@@ -1,147 +1,136 @@
-import os, sys
+import sys
 import cv2
 import numpy as np
-from datetime import datetime
-from PyQt5 import uic
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from Camera import Camera
 
-# 미리 video 폴더 생성 안해두면 안됨
-file_folder = os.path.dirname(os.path.abspath(__file__))
-from_class = uic.loadUiType(os.path.join(file_folder +\
-                            "/camera.ui"))[0]
+class Square:
+    def __init__(self, h, w):
+        dw = 100
+        dh = round(dw * 297 / 210)  # A4 크기 : 210x297mm
+        margin = 4 * h / 5
+        self.srcQuad = [[margin, margin], [margin, h-margin], [w-margin, h-margin], [w-margin, margin]]
+        self.srcQuad = np.array(self.srcQuad, np.float32)
+        self.dragSrc = [False] * 4
+        self.ptOld = None
 
+    def savePoints(self):
+        return " ".join(map(str, np.array(self.srcQuad).flatten().tolist())) + "\n"
+            
+    def loadPoints(self, points):
+        self.srcQuad = points
+        self.srcQuad = np.array(self.srcQuad, np.float32)
 
-class Polygon:
-    def __init__(self, points):
-        self.points = points
+def drawROI(img):
+    global squares
+    cpy = img.copy()
 
+    for sq in squares:
+        quads = sq.srcQuad.astype(np.int16)
 
+        c1 = (192, 192, 255)
+        c2 = (128, 128, 255)
 
-class WindowClass(QMainWindow, from_class) :
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-    
-        self.image = None
-        self.img_modified = None
-        self.pixmap = QPixmap()
+        for i in range(4):
+            cv2.circle(cpy, tuple(quads[i]), 25, c1, -1, cv2.LINE_AA)
+            cv2.line(cpy, tuple(quads[i-1]), tuple(quads[i]), c2, 2, cv2.LINE_AA)
 
-        self.camera = Camera(self)
-        self.camera.daemon = True
-        self.isCameraOn = False
+        disp = cv2.addWeighted(img, 0.3, cpy, 0.7, 0)
 
-        self.polyList = []
-
-
-        self.camera.update.connect(self.updateCamera)
-        self.btnCapture.clicked.connect(self.clickCapture)
-
-        self.label.mousePressEvent = self.getPixel
-        self.pol = []
-
-        self.cap = cv2.VideoCapture(1)
-        print("Loading cam", end='')
-        while not self.cap.isOpened():
-            print(".")
+    return disp
 
 
-    def addPolygon(self):
-        w, h = self.label.width(), self.label.height()
-        painter = QPainter(self.img_modified)
+def onMouse(event, x, y, flags, params):
+    global src, squares
+    # edges = srcQuad[:4]
+    # centers = srcQuad[4:]
 
-        painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))
-        painter.setBrush(QBrush(Qt.red, Qt.VerPattern))
-
-        points = [QPoint(w-50, h-50), QPoint(w+50, h-50),
-                  QPoint(w+50, h+50), QPoint(w-50, h+50)]
-        
-        painter.drawPolygon(QPolygon(points))
-        
-        self.plotImg()
-        self.polyList.append(Polygon)
+    if event == cv2.EVENT_LBUTTONDOWN:
+        for sq in squares:
+            for i in range(4):
+                if cv2.norm(sq.srcQuad[i] - (x, y)) < 25:
+                    sq.dragSrc[i] = True
+                    sq.ptOld = (x, y)
+                    break
 
 
-    def getPixel(self, event):
-        x = event.pos().x()
-        y = event.pos().y()
+    if event == cv2.EVENT_LBUTTONUP:
+        for sq in squares:
+            for i in range(4):
+                sq.dragSrc[i] = False
 
-        # self.pol.append(QPoint(int(x),int(y)))
+    if event == cv2.EVENT_MOUSEMOVE:
+        flag = False
+        for sq in squares:
+            for i in range(4):
+                if sq.dragSrc[i]:
+                    flag = True
+                    dx = x - sq.ptOld[0]
+                    dy = y - sq.ptOld[1]
 
-        # print(x,y, self.pol)
+                    sq.srcQuad[i] += (dx, dy)
 
-        self.statusBar().showMessage("x: " + str(x) + ", y: " + str(y))
-
-
-    # Camera Events
-    def clickCamera(self):
-        if self.isCameraOn == False:
-            self.btnCam.setText("Camera off")
-            self.btnCam.setStyleSheet("background-color: red")
-            self.isCameraOn = True
-            self.btnCapture.setText("Capture")
-
-            self.cameraStart()
-
-        else:
-            self.btnCam.setText('Camera on')
-            self.btnCam.setStyleSheet("")
-
-            self.isCameraOn = False
-            self.btnCapture.setText("Save")
-
-            self.cameraStop()
-
-    def cameraStart(self):
-        self.camera.running = True
-        self.camera.start()
-        self.video = cv2.VideoCapture(-1)
-
-    def cameraStop(self):
-        self.camera.running = False
-        if self.video != None:
-            self.video.release()
-        # self.label.clear()
-
-    def updateCamera(self):
-        retval, self.image = self.video.read()
-
-        if retval:
-            self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
-            self.img_modified = self.image
-
-            self.plotImg()
-
-    def clickCapture(self):
-        retval, self.image = self.cap.read()
-        if retval:
-            self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
-            self.img_modified = self.image
-            self.plotImg()
-
-        else:
-            return
-
-
-
-    #
-    def plotImg(self):
-        h, w, c = self.img_modified.shape
-
-        qimage = QImage(self.img_modified.data, w, h, w*c, QImage.Format_RGB888)
-
-        self.pixmap = self.pixmap.fromImage(qimage)
-        self.pixmap = self.pixmap.scaled(self.label.width(), self.label.height(),
-                                        Qt.KeepAspectRatio)
-
-        self.label.setPixmap(self.pixmap)
+                    cpy = drawROI(src)
+                    cv2.imshow('img', cpy)
+                    sq.ptOld = (x, y)
+                    break
+            if flag:
+                break
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    myWindows = WindowClass()
-    myWindows.show()
+    cam = cv2.VideoCapture(1)
 
-    sys.exit(app.exec_())
+    while not cam.isOpened():
+        i=0
+
+    _, src = cam.read()
+
+    if src is None:
+        print("Image Not Found")
+        sys.exit()
+
+    h, w = src.shape[:2]
+
+    squares = [Square(h, w)]
+
+    disp = drawROI(src)
+
+    cv2.imshow('img', disp)
+    cv2.setMouseCallback('img', onMouse)
+
+    while True:
+        key = cv2.waitKey()
+        if key == 13:
+            break
+
+        elif key == 27:
+            cv2.destroyWindow('img')
+            sys.exit()
+
+        elif key == ord("a"):
+            squares.append(Square(h, w))
+            cpy = drawROI(src)
+            cv2.imshow('img', cpy)
+            
+        elif key == ord("s"):
+            with open("save.txt", "w") as f:
+                for sq in squares:
+                    f.write(sq.savePoints())
+            
+            cv2.destroyWindow('img')
+            sys.exit()
+
+        elif key == ord("l"):
+            squares = []
+            with open("save.txt", "r") as f:
+                for line in f.readlines():
+                    a = np.array(list(map(np.float32, line.split())))
+                    a = a.reshape((4, 2))
+                    sq = Square(h, w)
+                    sq.loadPoints(a)
+                    squares.append(sq)
+            cpy = drawROI(src)
+            cv2.imshow('img', cpy)
+
+
+    cv2.destroyAllWindows()
+
