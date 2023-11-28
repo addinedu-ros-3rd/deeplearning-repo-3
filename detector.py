@@ -6,8 +6,11 @@ import numpy as np
 
 class Detector:
 
-    def __init__(self, model = None):
+    def __init__(self, model, frame_width, frame_height, args):
         self.model = model
+        self.frame_width = frame_width
+        self.frame_height = frame_height
+        self.colors = sv.ColorPalette.default()
 
         self.ZONE_POLYGON = np.array([
             [0, 0],
@@ -16,28 +19,41 @@ class Detector:
             [0, 1]
         ])
 
-        self.roi_coordinates = [
-            [(100, 200), (400, 600)],  # 첫 번째 roi 좌표 (x1, y1), (x2, y2)
-            [(500, 200), (800, 600)],  # 두 번째 roi 좌표 (x1, y1), (x2, y2)
-            [(900, 200), (1200, 600)]   # 세 번째 roi 좌표 (x1, y1), (x2, y2)
+        self.roi_points = []
+        with open("save.txt", "r") as f:
+            for line in f.readlines():
+                l = line.split()
+                cls, points = l[0], l[1:]
+                tmp = np.array(list(map(np.float32, points))).astype(np.int32)
+                tmp = tmp.reshape((4, 2))
+
+                self.roi_points.append(tmp)
+
+
+        self.zones = [
+            sv.PolygonZone(
+                polygon=points,
+                frame_resolution_wh=tuple(args.webcam_resolution)
+            ) for points in self.roi_points
+        ]
+        self.zone_annotators = [
+            sv.PolygonZoneAnnotator(
+                zone=zone, 
+                color=self.colors.by_idx(i),
+                thickness=2,
+                text_thickness=4,
+                text_scale=2
+            ) for i, zone in enumerate(self.zones)
         ]
 
-        self.box_annotator = sv.BoxAnnotator(
-            thickness=2,
-            text_thickness=2,
-            text_scale=1
-        )
-
-        # zone_polygon = (ZONE_POLYGON * np.array(args.webcam_resolution)).astype(int)
-        # zone = sv.PolygonZone(polygon=zone_polygon, frame_resolution_wh=tuple(args.webcam_resolution))
-        # zone_annotator = sv.PolygonZoneAnnotator(
-        #     zone=zone, 
-        #     color=sv.Color.red(),
-        #     thickness=2,
-        #     text_thickness=4,
-        #     text_scale=2
-        # )
-
+        self.box_annotators = [
+            sv.BoxAnnotator(
+                color=self.colors.by_idx(i),
+                thickness=2,
+                text_thickness=2,
+                text_scale=1
+            ) for i in range(len(self.roi_points))
+        ]
 
         # 0:person 49:orange 47:apple 46:banana
         self.item_dict = {46: "Banana",
@@ -50,52 +66,14 @@ class Detector:
         if (self.model is None) or (frame is None):
             raise ValueError("model 또는 frame이 없습니다.")
 
-        # 각각의 roi를 생성하고 detecting
-        for idx, (start, end) in enumerate(self.roi_coordinates):
-            x1, y1 = start
-            x2, y2 = end
+        results = self.model(frame)[0]
+        detections = sv.Detections.from_yolov8(results)
+        # detections = detections[detections.confidence > 0.5]
 
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            roi = frame[y1:y2, x1:x2]  # 주의: y1:y2, x1:x2로 수정
-            roi = np.ascontiguousarray(roi)
-
-            result = self.model(roi, agnostic_nms=True)[0]
-
-            detections = sv.Detections.from_yolov8(result)
-            selected_classes = self.item_dict.keys()
-            # detections = detections[np.isin(detections.class_id, selected_classes)]
-            
-            detect_dict = {k: 0 for k in selected_classes}
-
-            for detect in detections:
-                # print(detect)
-                xyxy, conf, id, _ = detect
-
-                if id in selected_classes:
-                    detect_dict[id] += 1
-            
-            # labels = [
-            #     f"{model.model.names[class_id]} {confidence:0.2f}"
-            #     for _, confidence, class_id, _
-            #     in detections
-            # ]
-
-            # roi 영역에 탐지된 물체 수 계산
-            num_detections = sum(detect_dict.values())
-
-            # roi 영역에 탐지된 물체 수 표시
-            cv2.putText(frame, f"Detections: {num_detections}", (x1, y1 - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
-
-            # print("-------------")
-            # print(f"Box {idx} : ")
-            for idx, sc in enumerate(selected_classes):
-                # print(f"{sc} : {detect_dict[sc]}")
-                cv2.putText(frame, f"{self.item_dict[sc]}: {detect_dict[sc]}", (x1, y1 - 10 - (25 * (idx+1))),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
-            # print("-------------")
-            
-            # 원본 프레임에 roi 영역과 탐지된 물체 표시
-            frame[y1:y2, x1:x2] = roi
+        for zone, zone_annotator, box_annotator in zip(self.zones, self.zone_annotators, self.box_annotators):
+            mask = zone.trigger(detections=detections)
+            detections_filtered = detections[mask]
+            frame = box_annotator.annotate(scene=frame, detections=detections_filtered, skip_label=True)
+            frame = zone_annotator.annotate(scene=frame)
 
         return frame
