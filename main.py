@@ -20,20 +20,23 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def main():
-    args = parse_arguments()
+    # args = parse_arguments()
     # frame_width, frame_height = args.webcam_resolution
-    frame_width, frame_height = 965, 547
+
 
     cap = cv2.VideoCapture("holding_59.MOV")
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, frame_width)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, frame_height)
+    
+    frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    print(frame_width, frame_height)
 
     model = YOLO("yolov8l.pt")
 
-    detector = Detector(model, frame_width, frame_height, args)
+    detector = Detector(model, frame_width, frame_height)
 
 
-    while True:
+    while cap.isOpened():
         ret, frame = cap.read()
 
         if ret:
@@ -41,15 +44,18 @@ def main():
                 frame = detector.detect_fruit_in_box(frame)
             except Exception as error:
                 print(type(error).__name__, "–", error)
-                # continue
-            
-            # zone.trigger(detections=detections)
-            # frame = zone_annotator.annotate(scene=frame)      
+                continue
             
             cv2.imshow("yolov8", frame)
 
             if (cv2.waitKey(30) == 27):
                 break
+        
+        else:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+    
+    cap.release()
+    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
