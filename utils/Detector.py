@@ -8,6 +8,14 @@ from supervision.geometry.core import Rect
 class Detector:
 
     def __init__(self, model, frame_width, frame_height, roi_txt):
+
+        # 0:person 49:orange 47:apple 46:banana
+        self.item_dict = {
+            0: "Banana",
+            1: "Apple",
+            2: "Orange"
+        }
+
         self.model = model
         self.frame_width = frame_width
         self.frame_height = frame_height
@@ -53,13 +61,6 @@ class Detector:
             ) for i in range(len(self.roi_points))
         ]
 
-        # 0:person 49:orange 47:apple 46:banana
-        self.item_dict = {
-            46: "Banana",
-            47: "Apple",
-            49: "Orange"
-        }
-
 
 
     def detect_fruit_in_box(self, frame = None):
@@ -69,16 +70,21 @@ class Detector:
         results = self.model(frame)[0]
         detections = sv.Detections.from_yolov8(results)
         detections = detections[detections.confidence > 0.5]
+        # print(detections)
 
-        for zone, zone_annotator, zone_annot_point, box_annotator in zip(self.zones, self.zone_annotators, self.zone_annotator_points, self.box_annotators):
+        for zone, zone_annotator, zone_annot_point, box_annotator\
+            in zip(self.zones, self.zone_annotators, self.zone_annotator_points, self.box_annotators):
+            
             mask = zone.trigger(detections=detections)
             detections_in_mask = detections[mask]
 
-            frame = box_annotator.annotate(scene=frame, detections=detections_in_mask)
+            # frame = box_annotator.annotate(scene=frame, detections=detections_in_mask)
             frame = zone_annotator.annotate(scene=frame)
 
             for i, id in enumerate(self.item_dict.keys()):
                 detections_id = detections_in_mask[detections_in_mask.class_id == id]
+
+                frame = box_annotator.annotate(scene=frame, detections=detections_id)
 
                 text = f"{self.item_dict[id]}: {len(detections_id.class_id)}"
 
