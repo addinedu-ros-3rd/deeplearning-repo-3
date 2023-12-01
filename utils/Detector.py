@@ -7,14 +7,14 @@ from supervision.geometry.core import Rect
 
 class Detector:
 
-    def __init__(self, model, frame_width, frame_height):
+    def __init__(self, model, frame_width, frame_height, roi_txt):
         self.model = model
         self.frame_width = frame_width
         self.frame_height = frame_height
         self.colors = sv.ColorPalette.default()
 
         self.roi_points = []
-        with open("save.txt", "r") as f:
+        with open(roi_txt, "r") as f:
             for line in f.readlines():
                 l = line.split()
                 cls, points = l[0], l[1:]

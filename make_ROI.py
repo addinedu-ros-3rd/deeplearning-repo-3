@@ -2,6 +2,7 @@ import sys
 import cv2
 import numpy as np
 
+
 class Square:
     def __init__(self, h, w):
         margin = 50
@@ -17,6 +18,8 @@ class Square:
     def loadPoints(self, points):
         self.srcQuad = points
         self.srcQuad = np.array(self.srcQuad, np.float32)
+
+
 
 def drawROI(img):
     global squares
@@ -76,7 +79,7 @@ def onMouse(event, x, y, flags, params):
 
 
 if __name__ == "__main__":
-    cam = cv2.VideoCapture("20231130-145554.jpg")
+    cam = cv2.VideoCapture("test/20231130-145554.jpg")
     # width = 1280
     # height = 720
     # cam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
@@ -116,7 +119,7 @@ if __name__ == "__main__":
             cv2.imshow('img', cpy)
             
         elif key == ord("s"):
-            with open("save.txt", "w") as f:
+            with open("save_roi.txt", "w") as f:
                 for i, sq in enumerate(squares):
                     f.write(str(i) + " " + sq.savePoints())
             

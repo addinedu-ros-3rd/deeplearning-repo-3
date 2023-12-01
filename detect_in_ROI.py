@@ -1,22 +1,23 @@
+import os
 import cv2
 import argparse
 
 from ultralytics import YOLO
 import supervision as sv
 import numpy as np
-from detector import Detector
+from utils.Detector import Detector
 
 
-def parse_arguments() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="YOLOv8 live")
-    parser.add_argument(
-        "--webcam-resolution", 
-        default=[1280, 720], 
-        nargs=2, 
-        type=int
-    )
-    args = parser.parse_args()
-    return args
+# def parse_arguments() -> argparse.Namespace:
+#     parser = argparse.ArgumentParser(description="YOLOv8 live")
+#     parser.add_argument(
+#         "--webcam-resolution", 
+#         default=[1280, 720], 
+#         nargs=2, 
+#         type=int
+#     )
+#     args = parser.parse_args()
+#     return args
 
 
 def main():
@@ -24,7 +25,7 @@ def main():
     # frame_width, frame_height = args.webcam_resolution
 
 
-    cap = cv2.VideoCapture("holding_59.MOV")
+    cap = cv2.VideoCapture("test/holding_59.MOV")
     
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -33,7 +34,9 @@ def main():
 
     model = YOLO("yolov8l.pt")
 
-    detector = Detector(model, frame_width, frame_height)
+    roi_txt = os.path.abspath("save_roi.txt")
+
+    detector = Detector(model, frame_width, frame_height, roi_txt)
 
 
     while cap.isOpened():

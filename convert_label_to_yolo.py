@@ -1,6 +1,6 @@
 import os
 import glob
-from labelme2yolo import convert
+from utils.labelme2yolo import convert
 from tqdm import tqdm
 
 def convert_folder(folder_path):
