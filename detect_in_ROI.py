@@ -24,14 +24,14 @@ def main():
     # frame_width, frame_height = args.webcam_resolution
 
 
-    cap = cv2.VideoCapture("./test/holding_59.MOV")
+    cap = cv2.VideoCapture("./test/test_data_0.MOV")
     
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     print(frame_width, frame_height)
 
-    model = YOLO("yolov8l.pt")
+    model = YOLO("best.pt")
 
     roi_txt = os.path.abspath("save_roi.txt")
 
