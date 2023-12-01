@@ -7,7 +7,6 @@ import supervision as sv
 import numpy as np
 from utils.Detector import Detector
 
-
 # def parse_arguments() -> argparse.Namespace:
 #     parser = argparse.ArgumentParser(description="YOLOv8 live")
 #     parser.add_argument(
@@ -25,7 +24,7 @@ def main():
     # frame_width, frame_height = args.webcam_resolution
 
 
-    cap = cv2.VideoCapture("test/holding_59.MOV")
+    cap = cv2.VideoCapture("./test/holding_59.MOV")
     
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -37,7 +36,6 @@ def main():
     roi_txt = os.path.abspath("save_roi.txt")
 
     detector = Detector(model, frame_width, frame_height, roi_txt)
-
 
     while cap.isOpened():
         ret, frame = cap.read()
