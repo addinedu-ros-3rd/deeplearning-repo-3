@@ -5,8 +5,6 @@
 # ros2 run auto_store_package auto_store_subscriber
 # 진행 후 실행
 
-# https://velog.io/@choonsik_mom/ROS2-python-%EA%B8%B0%EC%B4%88-%EC%97%AC%EB%9F%AC-topic%EC%9D%84-%EA%B5%AC%EB%8F%85%ED%95%98%EC%97%AC-csv-%ED%8C%8C%EC%9D%BC-%EB%A7%8C%EB%93%A4%EA%B8%B0
-
 
 import roslibpy
 import cv2
@@ -28,18 +26,18 @@ def main():
     client.run()
 
     # publisher = roslibpy.Topic(client, '/camera/image/compressed', 'sensor_msgs/CompressedImage')
-    publisher = roslibpy.Topic(client, '/camera1/image/compressed', 'sensor_msgs/CompressedImage')
+    publisher = roslibpy.Topic(client, '/camera2/image/compressed', 'sensor_msgs/CompressedImage')
     publisher.advertise()
 
 
-    cam = cv2.VideoCapture(1)
+    cam = cv2.VideoCapture(3)
 
     try:
         while client.is_connected:
             ret, frame = cam.read()
 
             if not(frame is None):
-                cv2.imshow("frame1", frame)
+                cv2.imshow("frame2", frame)
                 resized = cv2.resize(frame, (320, 320))
                 _, buffer = cv2.imencode('.jpeg', resized)
                 encoded = base64.b64encode(buffer).decode('ascii')

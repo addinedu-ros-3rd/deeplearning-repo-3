@@ -13,23 +13,37 @@ bridge = CvBridge()
 class ImageSubscriber(Node) :
   def __init__(self) :
     super().__init__('image_sub')
-    qos = QoSProfile(depth=10)
-    self.image_sub = self.create_subscription(
-      CompressedImage, # 임포트 된 메시지 타입 
-      '/camera/image/compressed', # 토픽리스트에서 조회한 토픽 주소
-      self.image_callback, # 정의한 콜백함수
-      qos)
-    self.image = np.empty(shape=[1])
 
-  def image_callback(self, msg) :
+    qos = QoSProfile(depth=10)
+
+    self.image_sub_1 = self.create_subscription(
+      CompressedImage, # 임포트 된 메시지 타입 
+      '/camera1/image/compressed', # 토픽리스트에서 조회한 토픽 주소
+      self.image_callback1, # 정의한 콜백함수
+      qos)
+    self.image_1 = np.empty(shape=[1])
+
+    self.image_sub_2 = self.create_subscription(
+      CompressedImage, # 임포트 된 메시지 타입 
+      '/camera2/image/compressed', # 토픽리스트에서 조회한 토픽 주소
+      self.image_callback2, # 정의한 콜백함수
+      qos)
+    self.image_2 = np.empty(shape=[1])
+
+  def image_callback1(self, msg) :
     img = bridge.compressed_imgmsg_to_cv2(msg)
-    cv2.imshow('ros_img', img)
-    cv2.waitKey(100)
+    cv2.imshow('ros_img1', img)
+    cv2.waitKey(10)
+
+  def image_callback2(self, msg) :
+    img = bridge.compressed_imgmsg_to_cv2(msg)
+    cv2.imshow('ros_img2', img)
+    cv2.waitKey(10)
      
 def main(args=None) :
   rclpy.init(args=args)
   node = ImageSubscriber()
-
+  
   try :
     rclpy.spin(node)
   except KeyboardInterrupt :

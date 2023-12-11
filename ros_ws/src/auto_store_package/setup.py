@@ -11,6 +11,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/msg', glob.glob(os.path.join('msg', '*.msg'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -22,7 +23,9 @@ setup(
     entry_points={
         'console_scripts': [
             'auto_store_publisher = auto_store_package.auto_store_publisher:main',
-            'auto_store_subscriber = auto_store_package.auto_store_subscriber:main'
+            'auto_store_subscriber_1 = auto_store_package.auto_store_subscriber_1:main',
+            'auto_store_subscriber_2 = auto_store_package.auto_store_subscriber_2:main',
+            'auto_store_subscriber_two = auto_store_package.auto_store_subscriber_two:main'
         ],
     },
 )
