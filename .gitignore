@@ -1,3 +1,19 @@
+# ros workspace
+ros_ws/build
+ros_ws/install
+ros_ws/log
+
+data/
+picking_up (copy)/
+labelImg/
+
+*.MOV
+*.avi
+*.mp4
+*.jpg
+*.png
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
