@@ -28,12 +28,14 @@ def get_checkOut_state(customer_dict):
 
     customer.update_out_time(checkOut_time)
     customer.checkIn_state = False                  # 고객의 check-in 상태 False 로 변경
-    
-    price_list = get_price_list()                   # DB에서 가격표 조회 필요
+    fruit_type = customer.shopping_list.keys()[0]  # 추가(태상)
+    fruit_values = customer.shopping_list.values()[0]  # 추가(태상)
+
+    price_list = get_price_list(fruit_type)         # DB에서 가격표 조회 필요
     customer.calc_total_price(price_list)           # 구매한 전체 금액 계산
-    make_payment(customer)                          # 결제 : 결제 내역 DB 업데이트 포함
+    make_payment(customer)           # 결제 : 결제 내역 DB 업데이트 포함 
     log_checkOut_state(checkOut_time, customer.id)
-    update_fruit_stock()                            # 과일 재고 update
+    update_fruit_stock(fruit_type, fruit_values)    # 과일 재고 update
 
     customer_dict.pop(customer_dict)                # customer_dict에서 나가는 customer 제외
 
