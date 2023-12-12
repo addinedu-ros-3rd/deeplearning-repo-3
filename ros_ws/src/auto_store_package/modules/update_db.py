@@ -11,13 +11,13 @@ log = Logger('DB_log.log')
 # ser = serial.Serial("/dev/ttyACM0", 9600)  # rfid와 시리얼 통신 필요
 
 # 고객 table에서 고객 정보 가져오기
-def get_customer_info():
+def get_customer_info(rfid):
     try:
-        query = "select customerID, personality from customer"
-        db.execute(query)
+        query = "select customerID, personality from customer where personality=%s"
+        db.execute(query, (rfid))
 
         customer_ID = db.fetchone(query)
-        personality = db.fetchOne(query)
+        personality = db.fetchone(query)
 
         return customer_ID, personality
     

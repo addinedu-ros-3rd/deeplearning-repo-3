@@ -8,9 +8,8 @@ def communication_connection():
     return connected
 
 
-def get_checkIn_state():
-    checkIn_time = time.strftime("%Y%m%d-%H%M%S")
-    customer_id, pay_id = get_customer_info()        # DB에서 고객 정보 가져
+def get_checkIn_state(checkIn_time, rfid):
+    customer_id, pay_id = get_customer_info(rfid)        # DB에서 고객 정보 가져
     log_checkIn_state(checkIn_time, customer_id)     # DB에 출입 테이블에 기록
     
     customer = Customer()
@@ -21,8 +20,7 @@ def get_checkIn_state():
     return customer
 
 
-def get_checkOut_state(customer_dict):
-    checkOut_time = time.strftime("%Y%m%d-%H%M%S")
+def get_checkOut_state(checkOut_time, customer_dict):
     customer_id, _ = get_customer_info()
     customer = customer_dict[customer_id]
 
@@ -42,19 +40,19 @@ def get_checkOut_state(customer_dict):
     return customer_dict
 
 
-# Receiving information from Action-Cam
-# action_info includes presence of a person, action type, fruit type and fruit quantity
-def receive_from_acttion():
-    action_time = time.strftime("%Y%m%d-%H%M%S")
-    action_info = None # dictionay type
-    return action_info, action_time
+# # Receiving information from Action-Cam
+# # action_info includes presence of a person, action type, fruit type and fruit quantity
+# def receive_from_acttion():
+#     action_time = time.strftime("%Y%m%d-%H%M%S")
+#     action_info = None # dictionay type
+#     return action_info, action_time
 
 
-# Receiving information from Stand-Cam
-def receive_from_stand():
-    stand_time = time.strftime("%Y%m%d-%H%M%S")
-    stand_info = None
-    return stand_info, stand_time
+# # Receiving information from Stand-Cam
+# def receive_from_stand():
+#     stand_time = time.strftime("%Y%m%d-%H%M%S")
+#     stand_info = None
+#     return stand_info, stand_time
 
 
 def double_check(stand_info):
