@@ -1,5 +1,12 @@
 data/
 
+# ros workspace
+ros_ws/build
+ros_ws/install
+ros_ws/log
+
+*.pt
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
