@@ -16,7 +16,7 @@ class Square:
         return " ".join(map(str, norm_points)) + "\n"
             
     def loadPoints(self, points):
-        self.srcQuad = points
+        self.srcQuad = points * [w, h]
         self.srcQuad = np.array(self.srcQuad, np.float32)
 
 
@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
         elif key == ord("l"):
             squares = []
-            with open("save.txt", "r") as f:
+            with open("save_roi.txt", "r") as f:
                 for line in f.readlines():
                     l = line.split()
                     num, points = l[0], l[1:]
