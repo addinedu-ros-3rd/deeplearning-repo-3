@@ -5,7 +5,7 @@ from sensor_msgs.msg import CompressedImage
 import numpy as np
 import cv2
 from cv_bridge import CvBridge
-from auto_store_package.msg import ImgNData
+from auto_store_package_msgs.msg import ImgNData
 import base64
 
 # 이미지 메시지 데이터를 어레이 형태로 변환
@@ -23,11 +23,13 @@ class ImageSubscriber(Node) :
     self.image = np.empty(shape=[1])
 
   def callback(self, msg) :
-    img = bridge.compressed_imgmsg_to_cv2(msg.image)
-    data = msg.fruit_data
-    cv2.imshow('ros_img_1', img)
-    self.get_logger().info('data received : ' + msg.fruit)
-    cv2.waitKey(100)
+    img = np.reshape(np.array(msg.img_data), (320, 320, 3))
+
+    if img is not None:
+      cv2.imshow('ros_img_1', img)
+
+    self.get_logger().info('data received : ' + msg.fruit_data)
+    cv2.waitKey(10)
      
 def main(args=None) :
   rclpy.init(args=args)
