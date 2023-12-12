@@ -10,13 +10,10 @@ import roslibpy
 import cv2
 import base64
 import logging
-import time
-from cv_bridge import CvBridge
 import sys
 
 
 def main():
-    bridge = CvBridge() 
 
     fmt = '%(asctime)s %(levelname)8s: %(message)s'
     logging.basicConfig(format=fmt, level=logging.INFO)
