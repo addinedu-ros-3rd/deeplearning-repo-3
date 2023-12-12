@@ -15,6 +15,7 @@ def main():
 
 
 
+# prediction 실행문
 def prediction():
     input_size = 28
     hidden_size = 128
