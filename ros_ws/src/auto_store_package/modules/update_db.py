@@ -1,7 +1,7 @@
 from datetime import datetime
-import DB
-import Logger
-import read_rfid
+from modules.DB import DB
+from modules.Logger import Logger
+from modules.read_rfid import *
 
 now = datetime.now()
 # now_ts = now.strftime('%Y-%m-%d %H:%M:%S')  # 서버의 시간을 보관 = 서버 시간이 UTC이면 UTC로 보관(로컬 테스트 시 한국 시간 저장됨)

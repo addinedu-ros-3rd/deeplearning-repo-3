@@ -1,6 +1,6 @@
 import time
-from customer import Customer
-from update_db import *
+from modules.customer import Customer
+from modules.update_db import *
 
 # Checking communication connection
 def communication_connection():

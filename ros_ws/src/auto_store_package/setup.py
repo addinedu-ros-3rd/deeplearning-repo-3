@@ -11,7 +11,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('lib/' + package_name, glob.glob('modules/*.py'))
+        ('lib/' + package_name + '/modules/', glob.glob('modules/*.py')),
+        ('lib/' + package_name + '/modules/', glob.glob('modules/*.ini'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,

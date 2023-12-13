@@ -1,12 +1,13 @@
 import mysql.connector
 import configparser
-import Logger
+from modules.Logger import Logger
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('install/auto_store_package/lib/auto_store_package/modules/config.ini', encoding='utf-8')
+
 dev = config['dev']
 
-log = Logger()
+log = Logger('log.log')
 
 class DB():
     
