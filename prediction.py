@@ -14,17 +14,23 @@ from Stand.utils.Detector import Detector
 
 
 def save_video(cam_type, video_name, img_list, frame_width, frame_height):
+    if not os.path.exists("./output_video"):
+        os.makedirs("./output_video")
+
     if cam_type == 'action':
         filename = './output_video/action_'+ video_name +'.avi'
     else:
         filename = './output_video/stand_'+ video_name +'.avi'
+    
     fourcc = cv2.VideoWriter_fourcc(*'DIVX')
     fps = 30
     frameSize = (frame_width, frame_height)
     isColor = True
+    
     out = cv2.VideoWriter(filename, fourcc, fps, frameSize, isColor)
     for out_ in img_list:
         out.write(out_)
+    
     out.release()
 
 
@@ -101,8 +107,8 @@ def main(video_path = './test_sample/test_data_0.MOV'):
                 stand_output_frame, stand_output_data = detector.detect_fruit_in_box(stand_img)
                 
                 # ToDo : 출력문을 통신 보내는 코드로 바꾸기
-                print(action_output_data)
-                print(stand_output_data)
+                print("Action-Cam:", action_output_data)
+                print("Stand-Cam:", stand_output_data)
                 print()
 
                 # Output Frames 저장
