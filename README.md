@@ -13,3 +13,8 @@
 
 ## 🏅 DBMS 구성도
 ![0b19f7c9-a7d9-4610-8c0b-47704ba45174](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/0889832a-81f6-4474-97c6-0e59f8e17942)
+
+## 💎 진행 상황
+1. 영상 인식: Action recognition, Object counting 영상 인식 구현 및 테스트 완료
+2. DB 및 PyQt, 통신 파트 각자 구현 중
+3. 하나로 합쳐서 데모 제작 예정
