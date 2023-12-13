@@ -45,7 +45,6 @@ class MyDataset(Dataset):
     def __len__(self):
         return len(self.X)
 
-
 class skeleton_LSTM(nn.Module):
     def __init__(self, input_dim):
         super(skeleton_LSTM, self).__init__()
@@ -73,8 +72,7 @@ class skeleton_LSTM(nn.Module):
         x = self.fc(x[:, -1, :])
         
         return x
-    
-    
+
 def get_hand_centers(results):
     # img = img_list[0]
     # pose = mp_pose.Pose(static_image_mode=True, model_complexity=1,
@@ -111,7 +109,7 @@ def get_hand_centers(results):
 def calculate_distance(point1, point2):
     return np.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
 
-def main():
+def action_cam(cap):
     if torch.cuda.is_available() == True:
         device = 'cuda:0'
         print("GPU is available")
@@ -144,10 +142,10 @@ def main():
     seq_index = 0
     
     
-    cap = cv2.VideoCapture(2)  
-    if not cap.isOpened():
-        print("웹캠을 열 수 없습니다.")
-        return
+    # cap = cv2.VideoCapture(2)  
+    # if not cap.isOpened():
+    #     print("웹캠을 열 수 없습니다.")
+    #     return
     while True:
         ret, img = cap.read()
         if ret:
@@ -295,7 +293,7 @@ def main():
             seq_index += 1
             
             cv2.imshow('camera', img)
-            
+        
         key = cv2.waitKey(1)
         if key == 27:
             break  
@@ -304,6 +302,12 @@ def main():
         json.dump(seq, f, ensure_ascii=False, indent=4)            
     cap.release()
     cv2.destroyAllWindows()
+    return seq
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__":    
+    cap = cv2.VideoCapture(2)  
+    if not cap.isOpened():
+        print("웹캠을 열 수 없습니다.")
+    act_seq = action_cam(cap) 
+    
+    
