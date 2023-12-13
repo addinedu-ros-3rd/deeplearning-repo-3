@@ -10,7 +10,7 @@ import cv2
 import time
 import json
 
-from modules.status import *
+from modules.status import Status
 from modules.customer import Customer
 from modules.read_rfid import *
 
@@ -38,8 +38,8 @@ class ImageSubscriber(Node) :
 
     img = np.reshape(np.array(msg.img_data), (msg.img_height, msg.img_width, msg.img_channel))
     cv2.imshow('ros_img', img)
-    action_data = json.dumps(msg.action_data)
-    stand_data = json.dumps(msg.stand_data)
+    action_data = json.loads(msg.action_data)
+    stand_data = json.loads(msg.stand_data)
     # self.get_logger().info('action_data : ' + msg.action_data)
     # self.get_logger().info('stand_data : ' + msg.stand_data)
     
@@ -47,6 +47,8 @@ class ImageSubscriber(Node) :
      
 def main(args=None) :
   global action_data, stand_data
+
+  status = Status()
 
   try :
     customer = None
@@ -63,74 +65,82 @@ def main(args=None) :
       # out_RFID_read = read_out_RFID()                     # 출구 RFID 리더로부터 값 수신
       in_RFID_read = None
       out_RFID_read = None
+
+      # test code
       if key == ord('i'):
-        in_RFID_read = "ff:ff:ff:ff"
+        in_RFID_read = "getrfid0"
         print(in_RFID_read)
-      if key == ord('o'):
-        out_RFID_read = "ff:ff:ff:ff"
+      elif key == ord('o'):
+        out_RFID_read = "getrfid0"
         print(out_RFID_read)
+      else :
+        in_RFID_read = None
+        out_RFID_read = None
 
       # action_data, action_time = receive_from_action()   # Action-Cam으로부터 값 수신
       # stand_data, stand_time = receive_from_stand()       # Stand-Cam으로부터 값 수신
       rclpy.spin_once(node) # read action_data & stand_data
 
-      # now_time = time.strftime("%Y%m%d-%H%M%S")
+      now_time = time.strftime("%Y%m%d-%H%M%S")
 
-      # # 입구 RFID가 읽혀졌을 때,
-      # if in_RFID_read:
-      #   # test code
-      #   in_RFID_read = None
+      # 입구 RFID가 읽혀졌을 때,
+      if in_RFID_read:
+        # test code
 
-      #   customer = get_checkIn_state(now_time, in_RFID_read)                  # DB에서 고객 정보 가져와서 customer 객체에 저장
-      #   customer_dict[customer.id] = customer           # customer dictionay에 출입한 고객 추가
+        customer = status.get_checkIn_state(now_time, in_RFID_read)                  # DB에서 고객 정보 가져와서 customer 객체에 저장
+        customer_dict[customer.id] = customer           # customer dictionay에 출입한 고객 추가
       
-      #   continue
+        in_RFID_read = None
+        continue
 
-      # # 출구 RFID가 읽혀졌을 때,
-      # if out_RFID_read:
-      #   # 고객 check-in 상태였으면
-      #   if customer.checkIn_state == True:
-      #       customer_dict = get_checkOut_state(now_time, customer_dict)
-      #   else:
-      #       print("Check-out Error")   # check-in된 고객이 없는데 출구 RFID가 찍힌 상태
-      #       exit()  # 일단 프로그램 종료하게 해둠
+      # 출구 RFID가 읽혀졌을 때,
+      if out_RFID_read:
+        # 고객 check-in 상태였으면
+        if int(customer.checkIn_state) == True:
+            customer_dict = status.get_checkOut_state(now_time, out_RFID_read, customer_dict)
+        else:
+            print("Check-out Error")   # check-in된 고객이 없는데 출구 RFID가 찍힌 상태
+            exit()  # 일단 프로그램 종료하게 해둠
 
-      #   continue
+        out_RFID_read = None
+        continue
 
       
-      # # 고객 check-in 상태
-      # if (customer != None) and (customer.checkIn_state == True):
-          
-      #   # Action-Cam에 사람이 관측된 상태
-      #   if action_data['person'] == True:
-      #       log_action_state(now_time, action_data['action'], action_data['fruit_type'])  # 행동 DB 기록
-      #       customer.start_shopping()                                                        # customer.shopping_state를 True로 변경
-      #       customer.update_action_state(action_data['action'])                              # customer 현재 action update
-        
-      #   # Action-Cam에 사람이 관측되지 않은 상태
-      #   else:               
-      #       if customer.shopping_state == True:         # 쇼핑 중이었다가 나간 것
-      #           customer.stop_shopping()                # customer.shopping_state를 False로 변경
-      #           if customer.shopping_state == 3:            # holding 상태일 때만
-      #               consistent = double_check(stand_data)   # Stand-Cam 결과와 double check
-      #               # if consistent == False:                 # 결과가 Stand-Cam과 일치하지 않을 경우, 불일치 logging 
-      #               #     log_mismatch(now_time)
-      #               # customer 장바구니 update
-      #               customer.update_shopping_list(action_data['fruit_type'], action_data['fruit_quantity'])
+      # 고객 check-in 상태
+      if (customer is not None) and (int(customer.checkIn_state) == True):
 
-      #       # 쇼핑 중이 아님
-      #       # else:
-      #       #     continue
+        # Action-Cam에 사람이 관측된 상태
+        if int(action_data['person']) == True:
+            status.update_db.log_action_state(now_time, action_data['action'], action_data['fruit_type'])  # 행동 DB 기록
+            customer.start_shopping()                                                        # customer.shopping_state를 True로 변경
+            customer.update_action_state(action_data['action'])                              # customer 현재 action update
+        
+        # Action-Cam에 사람이 관측되지 않은 상태
+        else:               
+            if int(customer.shopping_state) == True:         # 쇼핑 중이었다가 나간 것
+                customer.stop_shopping()                # customer.shopping_state를 False로 변경
+                if int(customer.shopping_state) == 3:            # holding 상태일 때만
+                    # consistent = status.double_check(stand_data)   # Stand-Cam 결과와 double check
+                    # if consistent == False:                 # 결과가 Stand-Cam과 일치하지 않을 경우, 불일치 logging 
+                    #     log_mismatch(now_time)
+                    # customer 장바구니 update
+                    customer.update_shopping_list(action_data['fruit_type'], action_data['fruit_quantity'])
+
+            # 쇼핑 중이 아님
+            # else:
+            #     continue
       
-      #   continue
+        continue
         
-      # # 고객 check-out 상태
-      # else:
-      #     continue
-        
-  except KeyboardInterrupt :
-    node.get_logger().info('Stopped by Keyboard')
+      # 고객 check-out 상태
+      else:
+          continue
+  # except Exception as e:
+  #   node.get_logger().info(str(type(e)) + ',' + str(e))
+  # # except KeyboardInterrupt :
+  # #   # node.get_logger().info('Stopped by Keyboard')
   finally :
+    status.disconnect_db()
     node.destroy_node()
     rclpy.shutdown()
 

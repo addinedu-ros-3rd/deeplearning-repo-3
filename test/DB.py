@@ -1,25 +1,16 @@
 import mysql.connector
 import configparser
-from modules.Logger import Logger
 import os.path
-import time
 
+config = configparser.ConfigParser()
+config.read('config.ini', encoding='utf-8')
+
+dev = config['dev']
 
 class DB():
     
     def __init__(self):
         try:
-            self.config = configparser.ConfigParser()
-            self.config.read('install/auto_store_package/lib/auto_store_package/modules/config.ini', encoding='utf-8')
-
-            dev = self.config['dev']
-
-            logfile_name = time.strftime("%Y%m%d-%H%M%S") + '.log'
-            with open(logfile_name,"w") as f:
-                f.close()
-
-            self.log = Logger(logfile_name)
-
             host = dev['host']
             port = dev['port']
             user = dev['user']
@@ -34,7 +25,7 @@ class DB():
             self.cursor = self.conn.cursor(buffered=True)
    
         except Exception as e:
-            self.log.error(f" DB __init__ : {e}")
+            print(f" DB __init__ : {e}")
             self.conn = None
 
 
@@ -51,11 +42,11 @@ class DB():
     def execute(self, query, params=None):
         try:
             self.checkIfConnected()
-            self.cursor.execute(query, params)
-            # self.conn.commit()
+            self.cursor.execute(query, tuple(params))
+            self.conn.commit()
 
         except Exception as e:
-            self.log.error(f" DB execute : {e}")
+            print(f" DB execute : {e}")
 
         # finally:
         #     self.disconnect()
@@ -67,7 +58,7 @@ class DB():
             return self.cursor.fetchone()[0]
 
         except Exception as e:
-            self.log.error(f" DB fetchOne : {e}")
+            print(f" DB fetchOne : {e}")
 
         # finally:
         #     self.disconnect()
@@ -79,7 +70,7 @@ class DB():
             return self.cursor.fetchall()
 
         except Exception as e:
-            self.log.error(f" DB fetchAll : {e}")
+            print(f" DB fetchAll : {e}")
 
         # finally:
         #     self.disconnect()

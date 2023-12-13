@@ -11,7 +11,7 @@ class Customer:
         self.out_time = None
 
         self.shopping_list = {}
-        self.total_price = None
+        self.total_price = 0
     
     def start_shopping(self):
         self.shopping_state = True
@@ -29,4 +29,4 @@ class Customer:
         self.shopping_list[fruit_type] = number
     
     def calc_total_price(self, price_list):
-        self.total_price = None
+        self.total_price = 0

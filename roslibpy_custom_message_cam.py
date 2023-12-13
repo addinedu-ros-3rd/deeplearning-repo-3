@@ -26,11 +26,18 @@ def main():
     publisher.advertise()
 
 
-    cam = cv2.VideoCapture(1)
+    # cam = cv2.VideoCapture(1)
+    cam = cv2.VideoCapture('test/holding_59.MOV')
     resized_height, resized_width = 320, 320
+
+    video_length = int(cam.get(cv2.CAP_PROP_FRAME_COUNT))
+    cnt = 0
 
     try:
         while client.is_connected:
+            if cnt == video_length:
+                break
+
             ret, frame = cam.read()
 
             if not(frame is None):
@@ -40,23 +47,23 @@ def main():
 
                 stand_data = {
                     "1": {
-                        "Banana": 0,
+                        "Banana": 2,
                         "Apple": 0,
                         "Orange": 0},
                     "2": {
                         "Banana": 0,
-                        "Apple": 0,
+                        "Apple": 5,
                         "Orange": 0},
                     "3": {
                         "Banana": 0,
                         "Apple": 0,
-                        "Orange": 0}
+                        "Orange": 10}
                 }
                 action_data = {
-                    "person": 0,
-                    "action": 0,
-                    "fruit_type": 5,
-                    "fruit_quantity": 0
+                    "person": 1,
+                    "action": 2,
+                    "fruit_type": 2,
+                    "fruit_quantity": 1
                 }
 
                 publisher.publish(roslibpy.Message({'img_data': encoded,
@@ -70,6 +77,10 @@ def main():
             if key == ord('q'):
                 raise
             # time.sleep(0.1)
+
+            cnt += 1
+
+
 
     except Exception as e:
         print("An error occurred:", type(e).__name__, "–", e)
