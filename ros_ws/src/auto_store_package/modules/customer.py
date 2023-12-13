@@ -3,7 +3,7 @@ class Customer:
         self.id = customer_id
         self.pay_id = pay_id
         
-        self.checkIn_state = True
+        self.checkIn_state = False
         self.shopping_state = False
         self.action_state = None
         

@@ -1,5 +1,5 @@
 def read_in_RFID():
-    pass
+    return None
 
 def read_out_RFID():
-    pass
+    return None

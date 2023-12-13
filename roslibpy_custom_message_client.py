@@ -4,6 +4,7 @@ import base64
 import logging
 import sys
 import numpy as np
+import json
 
 def receive(msg):
     # print(msg['img_data'])
@@ -12,8 +13,10 @@ def receive(msg):
     img = np.reshape(img_buf, (msg['img_height'], msg['img_width'], msg['img_channel']))
     
     cv2.imshow('ros_img1', img)
-    print("action_data : ", msg['action_data'])
-    print("stand_data : ", msg['stand_data'])
+    # print("action_data : ", msg['action_data'])
+    # print("stand_data : ", msg['stand_data'])
+    # stand_data = json.loads(msg['stand_data'])
+    # print(stand_data)
 
     key = cv2.waitKey(10)
     if key == ord('q'):

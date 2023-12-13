@@ -16,6 +16,7 @@ def get_checkIn_state(checkIn_time, rfid):
     customer.id = customer_id
     customer.pay_id = pay_id
     customer.in_time = checkIn_time
+    customer.checkIn_state = True
 
     return customer
 
@@ -27,13 +28,14 @@ def get_checkOut_state(checkOut_time, customer_dict):
     customer.update_out_time(checkOut_time)
     customer.checkIn_state = False                  # 고객의 check-in 상태 False 로 변경
     fruit_type = customer.shopping_list.keys()[0]  # 추가(태상)
-    fruit_values = customer.shopping_list.values()[0]  # 추가(태상)
+    fruit_counts = customer.shopping_list[fruit_type]  # 추가(태상)
 
-    price_list = get_price_list(fruit_type)         # DB에서 가격표 조회 필요
-    customer.calc_total_price(price_list)           # 구매한 전체 금액 계산
+    price_list = get_price_list(fruit_type)         # DB에서 가격표 조회 필요 (현재는 price 하나만 받음)
+    # customer.calc_total_price(price_list)           # 구매한 전체 금액 계산
+    customer.total_price = fruit_counts * price_list
     make_payment(customer)           # 결제 : 결제 내역 DB 업데이트 포함 
     log_checkOut_state(checkOut_time, customer.id)
-    update_fruit_stock(fruit_type, fruit_values)    # 과일 재고 update
+    update_fruit_stock(fruit_type, fruit_counts)    # 과일 재고 update
 
     customer_dict.pop(customer_dict)                # customer_dict에서 나가는 customer 제외
 
@@ -42,7 +44,7 @@ def get_checkOut_state(checkOut_time, customer_dict):
 
 # # Receiving information from Action-Cam
 # # action_info includes presence of a person, action type, fruit type and fruit quantity
-# def receive_from_acttion():
+# def receive_from_action():
 #     action_time = time.strftime("%Y%m%d-%H%M%S")
 #     action_info = None # dictionay type
 #     return action_info, action_time

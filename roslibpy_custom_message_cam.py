@@ -11,7 +11,7 @@ import cv2
 import base64
 import logging
 import sys
-
+import json
 
 def main():
 
@@ -63,8 +63,8 @@ def main():
                                                     'img_height': resized.shape[0],
                                                     'img_width': resized.shape[1],
                                                     'img_channel': resized.shape[2],
-                                                    'action_data': str(action_data),
-                                                    'stand_data': str(stand_data)}))
+                                                    'action_data': json.dumps(action_data),
+                                                    'stand_data': json.dumps(stand_data)}))
 
             key = cv2.waitKey(100)
             if key == ord('q'):
