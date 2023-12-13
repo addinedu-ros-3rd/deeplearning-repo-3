@@ -12,7 +12,7 @@
 ![Screenshot from 2023-12-13 14-23-42](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/f3810d66-f50e-41bd-b9bc-6a82801c9522)
 
 ## 🏅 DBMS 구성도
-![0b19f7c9-a7d9-4610-8c0b-47704ba45174](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/0889832a-81f6-4474-97c6-0e59f8e17942)
+![dl_db_result drawio](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/f773bf64-f495-480d-8954-7dcae31674d4)
 
 ## 💎 진행 상황
 1. 영상 인식: Action recognition, Object counting 영상 인식 구현 및 테스트 완료
