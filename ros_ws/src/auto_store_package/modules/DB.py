@@ -11,7 +11,6 @@ class DB():
         try:
             self.config = configparser.ConfigParser()
             self.config.read('install/auto_store_package/lib/auto_store_package/modules/config.ini', encoding='utf-8')
-
             dev = self.config['dev']
 
             logfile_name = time.strftime("%Y%m%d-%H%M%S") + '.log'
@@ -34,7 +33,7 @@ class DB():
             self.cursor = self.conn.cursor(buffered=True)
    
         except Exception as e:
-            self.log.error(f" DB __init__ : {e}")
+            print(f" DB __init__ : {type(e)} - {e}")
             self.conn = None
 
 

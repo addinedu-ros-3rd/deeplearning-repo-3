@@ -49,7 +49,7 @@ class Update_DB():
         checkOut_time = customer.out_time
         price = customer.total_price
         try:
-            query = """insert into payment (customerID, enterenceTime, totalAmount) values (%s, %s, %s)"""
+            query = """insert into payment (customerID, paymentTime, totalAmount) values (%s, %s, %s)"""
             self.db.execute(query, (customer_ID, checkOut_time, price))
         except Exception as e:
             self.log.error(f"make_payment() is error")
@@ -60,7 +60,7 @@ class Update_DB():
     def log_action_state(self, action_time, action_type, fruit_id):
         # print(action_time, action_type, fruit_id)
         try:
-            query = """insert into actionRecognition (fruitID, actionTime, actionType) values (%s, %s, %s)"""
+            query = """insert into actionRecognition (fruitID, actionTime, actionID) values (%s, %s, %s)"""
             self.db.execute(query, (fruit_id, action_time, action_type))
             
         except Exception as e:
@@ -68,26 +68,31 @@ class Update_DB():
             print(f"log_action_state() is error {type(e)} - {e}")
 
 
-    # # 불일치 table : logging
-    # def log_mismatch(self, customer, mismatch_time):
-    #     try:
-    #         query = "insert into mismatchActionStand (standFruitID, actionFruitID, mismatch) values (%s, %s, %s)"
-    #         self.db.execute(query, (fruit_id, action_time, action_type))
-    #     except Exception as e:
-    #         self.log.error(f"make_payment() is error")
+    # 불일치 table : logging
+    def log_mismatch(self, now_time, differ_fruit_Name, differ_quantity, before_fruit_total, cur_fruit_total):
+        try:
+            query = """insert into mismatchActionStand (mismatchTime, fruitName, beforeStandQuantity, currentStandQuantity, outQuantity)
+                            values (%s, %s, %s, %s, %s)"""
+            self.db.execute(query, (now_time, differ_fruit_Name, differ_quantity, before_fruit_total[differ_fruit_Name], cur_fruit_total[differ_fruit_Name]))
+        except Exception as e:
+            self.log.error(f"log_mismatch() is error")
         
 
 
     # 과일 table : 재고 update
-    def update_fruit_stock(self, fruit_type, fruit_out_counts):
+    def update_fruit_stock(self, customer, fruit_type, fruit_out_counts):
         try:
             query = "select stockStand from fruits where fruitID=%s"
             self.db.execute(query, (fruit_type,))
 
-            fruit_stock_counts = self.db.fetchone()
+            fruit_stock_counts = int(self.db.fetchone())
 
             query = "update fruits set stockStand=%s where fruitID=%s"
-            self.db.execute(query, ((fruit_stock_counts-fruit_out_counts), fruit_type))
+            self.db.execute(query, ((fruit_stock_counts-int(fruit_out_counts)), fruit_type))
+
+            query = """insert into productOut (fruitID, customerID, outDate, outQuantity)
+                            values (%s, %s, %s, %s)"""
+            self.db.execute(query, (customer.id, fruit_type, customer.out_time, fruit_out_counts))
 
         except Exception as e:
             self.log.error(f"update_fruit_stock() is error")
@@ -106,6 +111,25 @@ class Update_DB():
         except Exception as e:
             self.log.error(f"get_price_list() is error")
             return None
+
+    def get_shopping_Basket(self, customer_id):
+        try:
+            basket = {}
+
+            query = "select fruitID, outQuantity from shoppingBasket where customerID=%s"
+            self.db.execute(query, (customer_id,))
+
+            result = self.db.fetchAll()
+
+            for fruit, quantity in result:
+                basket[fruit] = int(quantity)
+
+            return basket
+        
+        except Exception as e:
+            self.log.error(f"get_shopping_Basket() is error")
+            return None
+
 
     def disconnect_db(self):
         self.db.disconnect()

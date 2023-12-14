@@ -1,8 +1,19 @@
+# bridge 이용 : terminal에서
+# ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+# ros2 launch rosbridge_server rosbridge_websocket_launch.xml port:=9091
+# source ros_ws/install/local_setup.bash
+# ros2 run auto_store_package auto_store_subscriber
+# 진행 후 실행
 
+
+import roslibpy
+import base64
+import json
 import cv2
 import torch
 import os
 import copy
+
 from torchvision import transforms, models
 import torch.nn as nn
 import mediapipe as mp
@@ -34,14 +45,21 @@ def save_video(cam_type, video_name, img_list, frame_width, frame_height):
     out.release()
 
 
-def main(video_path = './test_sample/test_data_0.MOV'):
+def main(video_path = './test_sample/test_data.mp4'):
+    client = roslibpy.Ros(host='localhost', port=9090) 
+    client.run()
+
+    publisher = roslibpy.Topic(client, '/ImgNData', 'auto_store_package_msgs/msg/ImgNData')
+    publisher.advertise()
+
     cv2.destroyAllWindows()
     cap = cv2.VideoCapture(video_path)
 
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    resized_height, resized_width = 320, 320
     
-    video_name = video_path.split('/')[-1]
+    # video_name = video_path.split('/')[-1]
 
     attention_dot = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
@@ -92,15 +110,15 @@ def main(video_path = './test_sample/test_data_0.MOV'):
     roi_txt = os.path.abspath("./Stand/save_roi.txt")
     detector = Detector(yolo, frame_width, frame_height, roi_txt)
     
-    action_out_img_list = []
-    stand_out_img_list = []
+    # action_out_img_list = []
+    # stand_out_img_list = []
     action_output_frame = None
     if cap.isOpened():
         while True:
             ret, img = cap.read()
 
-            img = cv2.flip(img, 1)
-            img = cv2.flip(img, 0)
+            # img = cv2.flip(img, 1)
+            # img = cv2.flip(img, 0)
 
             if ret:
                 # if cnt == interval:
@@ -115,12 +133,23 @@ def main(video_path = './test_sample/test_data_0.MOV'):
                 print("Stand-Cam:", stand_output_data)
                 print()
 
-                # Output Frames 저장
+                # # Output Frames 저장
                 # action_out_img_list.append(action_output_frame)
                 # stand_out_img_list.append(stand_output_frame)
                 
-                cv2.imshow("Action Cam", action_output_frame)
-                cv2.imshow("Stand Cam", stand_output_frame)
+                # cv2.imshow("Action Cam", action_output_frame)
+                # cv2.imshow("Stand Cam", stand_output_frame)
+                
+                resized = cv2.resize(action_output_frame, (resized_height, resized_width))
+                encoded = base64.b64encode(resized).decode('ascii')
+
+
+                publisher.publish(roslibpy.Message({'img_data': encoded,
+                                                    'img_height': resized.shape[0],
+                                                    'img_width': resized.shape[1],
+                                                    'img_channel': resized.shape[2],
+                                                    'action_data': json.dumps(action_output_data),
+                                                    'stand_data': json.dumps(stand_output_data)}))
                 cv2.waitKey(1)
             
             else:
