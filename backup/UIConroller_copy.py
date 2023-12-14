@@ -8,8 +8,8 @@ import cv2
 import time
 import re
 import time
+
 from  Database import DB
-from ImageReceiver import ImageReceiver
 
 from_class = uic.loadUiType("UI.ui")[0]
 
@@ -37,39 +37,10 @@ class WindowClass(QMainWindow, from_class) :
         self.table_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table_3.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         # self.table_3.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        
-        
-        self.pixmap = QPixmap()
-        
-        # self.player = ImageReceiver(filename=file[0], framerate=20)
-        self.player = ImageReceiver()
-        self.player.daemon = True
-        self.player.running = True
-        self.player.update.connect(self.updatePlayer)
-        self.player.start()
-        
 
         # 불일치 로깅
         # self.mismatch()
 
-    def updatePlayer(self, frame):
-        self.image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        # print(frame)
-        self.plotImg()
-
-    
-    def plotImg(self):
-        h, w, c = self.image.shape
-
-        qimage = QImage(self.image.data, w, h, w*c, QImage.Format_RGB888)
-
-        self.pixmap = self.pixmap.fromImage(qimage)
-        self.pixmap = self.pixmap.scaled(self.label.width(), self.label.height(), Qt.KeepAspectRatio)
-
-        self.label.setPixmap(self.pixmap)
-    
-    
-    
     def search(self):
         self.table.clearContents()
 
