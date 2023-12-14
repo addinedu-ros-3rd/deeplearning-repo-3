@@ -2,17 +2,23 @@
 
 # 딥러닝 기반의 무인 매장 시스템
 ## 📖 개요
-### Action recognition 기반으로 산 어떤 과일을 샀는지 인식하면 DB 및 PyQt를 이용하여 해당 물건을 자동으로 결제
+### Action recognition 기반으로 어떤 과일을 샀는지 인식하면 DB 및 PyQt를 이용하여 해당 물건을 자동으로 결제
 ### Yolov8 기반 Object counting을 활용하여 매대별 과일 종류 및 개수 파악
 
-## 🥇 시스템 구성도
-![Screenshot from 2023-12-13 14-25-08](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/128d05e6-68f9-4f20-9d8e-61b0b2d50fd2)
+## 🥇 하드웨어 구성도
+![시스템 하드웨어 및 소프트웨어 구성도 drawio](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/3165375f-bc88-47d9-a5e0-db6af776d943)
 
-## 🥇 세부 시스템 구성
-![Screenshot from 2023-12-13 14-23-42](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/f3810d66-f50e-41bd-b9bc-6a82801c9522)
+## 🥇 소프트웨어 구성도
+![image (1)](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/85877a2b-6ab8-4480-9ac8-db96b6819892)
+
+## 🥇 USECASE Diagram
+![Use_Case drawio](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/bf1d8641-801c-4cb4-a76b-09b14ce29dc1)
+
+## 🥇 Sequential Diagram
+![구매_Squetial_Diagram drawio (1)](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/264ee441-0bcb-4411-a39a-0d66c6eb6da2)
 
 ## 🏅 DBMS 구성도
-![dl_db_result drawio](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/f773bf64-f495-480d-8954-7dcae31674d4)
+![dl_db_result drawio (3)](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/e9949bd6-afa5-4538-bbf2-fa8c182fc87b)
 
 ## 💎 진행 상황
 1. 영상 인식: Action recognition, Object counting 영상 인식 구현 및 테스트 완료
