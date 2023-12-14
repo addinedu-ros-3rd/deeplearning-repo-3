@@ -82,7 +82,7 @@ class WindowClass(QMainWindow, from_class) :
             self.sql += f" AND c.customerID = {self.customerId}"
 
         self.table.setRowCount(0)
-
+        
         db.execute(self.sql)
         result = db.fetchAll()
         print(result)

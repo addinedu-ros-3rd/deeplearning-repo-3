@@ -20,7 +20,7 @@ class ImageReceiver(QThread):
         # while self.client.is_connected:
         #     self.listener.subscribe(self.receive)
         
-        self.before_time = time.time()
+        # self.before_time = time.time()
         
 
     def receive(self, msg):
@@ -30,8 +30,8 @@ class ImageReceiver(QThread):
         img = np.reshape(img_buf, (msg['img_height'], msg['img_width'], msg['img_channel']))
         self.update.emit(img)
         # cv2.imshow(img)
-        print(time.time() - self.before_time)
-        self.before_time = time.time()
+        # print(time.time() - self.before_time)
+        # self.before_time = time.time()
         
         
     def run(self):
