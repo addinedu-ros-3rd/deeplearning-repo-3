@@ -8,8 +8,8 @@ import cv2
 import time
 import re
 import time
+
 from  Database import DB
-from ImageReceiver import ImageReceiver
 
 from_class = uic.loadUiType("UI.ui")[0]
 
@@ -37,43 +37,13 @@ class WindowClass(QMainWindow, from_class) :
         self.table_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table_3.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         # self.table_3.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        
-        
-        self.pixmap = QPixmap()
-        
-        # self.player = ImageReceiver(filename=file[0], framerate=20)
-        self.player = ImageReceiver()
-        self.player.daemon = True
-        self.player.running = True
-        self.player.update.connect(self.updatePlayer)
-        self.player.start()
-        
 
         # 불일치 로깅
         # self.mismatch()
 
-    def updatePlayer(self, frame):
-        self.image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        # print(frame)
-        self.plotImg()
-
-    
-    def plotImg(self):
-        h, w, c = self.image.shape
-
-        qimage = QImage(self.image.data, w, h, w*c, QImage.Format_RGB888)
-
-        self.pixmap = self.pixmap.fromImage(qimage)
-        self.pixmap = self.pixmap.scaled(self.label.width(), self.label.height(), Qt.KeepAspectRatio)
-
-        self.label.setPixmap(self.pixmap)
-    
-    
-    
     def search(self):
         self.table.clearContents()
-        self.getFruits()
-        self.mismatch()
+
         # 고객 ID 입력값 변수로 저장
         self.customerId = self.customer_id.text()
         
@@ -84,39 +54,44 @@ class WindowClass(QMainWindow, from_class) :
         
         db = DB()
         self.sql = """
-            SELECT e.customerID,
-            CASE WHEN e.enterStatus = '1' THEN e.enterenceTime ELSE NULL END AS inTime,
-            CASE WHEN e.enterStatus = '0' THEN e.enterenceTime ELSE NULL END AS outTime,
-            f.fruitName, po.outQuantity, po.outQuantity * f.price AS totalPrice
-            FROM enterence e
-            LEFT JOIN productOut po ON po.customerID = e.customerID
-            LEFT JOIN fruits f ON po.fruitID = f.fruitID
+        SELECT c.customerID, 
+        CASE WHEN e.enterStatus = '1' THEN e.enterenceTime ELSE NULL END AS inTime,
+        CASE WHEN e.enterStatus = '0' THEN e.enterenceTime ELSE NULL END AS outTime,
+        f.fruitName, s.outQuantity, p.totalAmount
+        FROM shoppingBasket s
+        LEFT JOIN customer c ON s.customerID = c.customerID
+        LEFT JOIN payment p ON s.shoppingID = p.shoppingID
+        LEFT JOIN fruits f ON s.fruitID = f.fruitID
+        LEFT JOIN enterence e ON e.customerID = c.customerID
         """
-        if self.customerId:
-            self.sql += f" WHERE e.customerID = {self.customerId}"
-
         # 날짜 범위 조건 추가
         if inTimeStart and inTimeEnd:
-            self.sql += f" AND e.enterenceTime BETWEEN '{inTimeStart}' AND '{inTimeEnd}'"
+            self.sql += f"WHERE e.enterenceTime BETWEEN '{inTimeStart}' AND '{inTimeEnd}'"
             if outTimeStart and outTimeEnd:
                 self.sql += f" AND e.enterenceTime BETWEEN '{outTimeStart}' AND '{outTimeEnd}'"
         else:
             if outTimeStart and outTimeEnd:
-                self.sql += f" AND e.enterenceTime BETWEEN '{outTimeStart}' AND '{outTimeEnd}'"
-            
+                self.sql += f"WHERE e.enterenceTime BETWEEN '{outTimeStart}' AND '{outTimeEnd}'"
+
+        # # 날짜 범위 조건 추가
+        # if inTimeStart and inTimeEnd:
+        #     self.sql += f"WHERE e.enterenceTime BETWEEN '{inTimeStart}' AND '{inTimeEnd}'"
+        
+        # customerID가 입력된 경우 해당 ID에 대한 데이터만 조회
+        if self.customerId:
+            self.sql += f" AND c.customerID = {self.customerId}"
+
         self.table.setRowCount(0)
 
         db.execute(self.sql)
         result = db.fetchAll()
         print(result)
-
         db.disconnect()
         for row in result:
             resultRow = self.table.rowCount()
             self.table.insertRow(resultRow)
             for i, v in enumerate(row):
                 self.table.setItem(resultRow, i, QTableWidgetItem(str(v)))
-
             
     def reset(self):
 
@@ -127,15 +102,15 @@ class WindowClass(QMainWindow, from_class) :
         db=DB()
         
         self.sql = """
-            SELECT po.outDate, f.fruitName, po.outQuantity
-            FROM productOut po
-            JOIN fruits f ON po.fruitID = f.fruitID
+            SELECT p.paymentTime, f.fruitName, s.outQuantity
+            FROM shoppingBasket s
+            LEFT JOIN payment p ON s.shoppingID = p.shoppingID
+            LEFT JOIN fruits f ON s.fruitID = f.fruitID
         """
 
         db.execute(self.sql)
         result = db.fetchAll()
         db.disconnect()
-        self.table_2.setRowCount(0)
 
         for row in result:
             resultRow = self.table_2.rowCount()
@@ -147,18 +122,15 @@ class WindowClass(QMainWindow, from_class) :
     def mismatch(self):
         db = DB()
         self.sql = """
-            SELECT m.mismatchTime, f.fruitName, po.outQuantity
+            SELECT mismatch, f1.fruitName, f2.fruitName
             FROM mismatchActionStand AS m
-            LEFT JOIN
-            fruits f ON m.fruitName = f.fruitName
-            LEFT JOIN
-            productOut po ON m.fruitName = f.fruitName
+            LEFT JOIN fruits AS f1 ON m.standFruitID = f1.fruitID
+            LEFT JOIN fruits AS f2 ON m.actionFruitID = f2.fruitID
         """
 
         db.execute(self.sql)
         result = db.fetchAll()
         db.disconnect()
-        self.table_3.setRowCount(0)
 
         for row in result:
             resultRow = self.table_3.rowCount()

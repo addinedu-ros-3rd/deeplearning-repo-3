@@ -4,11 +4,11 @@ config = configparser.ConfigParser()
 
 # 섹션과 키-값 설정 추가
 config['dev'] = {
-    'host': 'localhost',
+    'host': 'database-1.cklu0egki5of.ap-northeast-2.rds.amazonaws.com',
     'port': '3306',
-    'user': 'adviser',
-    'password': '123123',
-    'database': 'example'
+    'user': 'root',
+    'password': '1234deepqwer!',
+    'database': 'AIstore'
 }
 
 # config.ini 파일에 쓰기
