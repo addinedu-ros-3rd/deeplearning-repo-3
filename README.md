@@ -11,8 +11,11 @@
 ## 🥇 USECASE Diagram
 ![Use_Case drawio (1)](https://github.com/haneol0415/calculator/assets/61872888/4819b346-45ac-46a7-9ddc-0a321045a179)
 
-## 🥇 Sequential Diagram
-![구매_Squetial_Diagram drawio (1)](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/264ee441-0bcb-4411-a39a-0d66c6eb6da2)
+## 🥇 Sequence Diagram
+![입장_시퀀스_다이어그램 drawio](https://github.com/haneol0415/calculator/assets/61872888/5a6749a7-7f3b-4fae-b796-7788e9ed971d)
+![쇼핑_시퀀스_다이어그램 drawio (1)](https://github.com/haneol0415/calculator/assets/61872888/de376278-bb08-4448-b887-2bbc338b4c9b)
+
+#### 퇴장 및 구매 시나리오 (ToDo)
 
 ## 🏅 DBMS 구성도
 ![dl_db_result drawio (3)](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/e9949bd6-afa5-4538-bbf2-fa8c182fc87b)
