@@ -11,8 +11,8 @@ class ActionLSTM(nn.Module):
         self.output_layer = nn.Linear(hidden_size, num_class1)
 
     def forward(self, x):
-        hidden_states = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
-        cell_states = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+        hidden_states = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to('cuda:0')
+        cell_states = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to('cuda:0')
         out, _ = self.lstm(x, (hidden_states, cell_states))
         out1 = self.output_layer(out[:, -1, :])
 
