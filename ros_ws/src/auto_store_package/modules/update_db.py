@@ -60,7 +60,7 @@ class Update_DB():
     def log_action_state(self, action_time, action_type, fruit_id):
         # print(action_time, action_type, fruit_id)
         try:
-            query = """insert into actionRecognition (fruitID, actionTime, actionID) values (%s, %s, %s)"""
+            query = """insert into actionRecognition (fruitID, actionTime, actionType) values (%s, %s, %s)"""
             self.db.execute(query, (fruit_id, action_time, action_type))
             
         except Exception as e:
@@ -92,7 +92,7 @@ class Update_DB():
 
             query = """insert into productOut (fruitID, customerID, outDate, outQuantity)
                             values (%s, %s, %s, %s)"""
-            self.db.execute(query, (customer.id, fruit_type, customer.out_time, fruit_out_counts))
+            self.db.execute(query, (fruit_type, customer.id, customer.out_time, fruit_out_counts))
 
         except Exception as e:
             self.log.error(f"update_fruit_stock() is error")

@@ -36,7 +36,7 @@ CREATE TABLE fruits (
 -- 테이블 생성: shoppingBasket
 DROP TABLE IF EXISTS shoppingBasket;
 CREATE TABLE shoppingBasket (
-    shoppingID INT PRIMARY KEY,
+    shoppingID INT AUTO_INCREMENT PRIMARY KEY,
     customerID int,
     fruitID int,
     outQuantity int,
@@ -46,11 +46,11 @@ CREATE TABLE shoppingBasket (
 -- 테이블 생성: payment
 DROP TABLE IF EXISTS payment;
 CREATE TABLE payment (
-    paymentID INT PRIMARY KEY,
-    shoppingID INT,
+    paymentID INT AUTO_INCREMENT PRIMARY KEY,
+    customerID INT,
     paymentTime TIMESTAMP,
     totalAmount INT,
-    FOREIGN KEY (shoppingID) REFERENCES shoppingBasket(shoppingID)
+    FOREIGN KEY (customerID) REFERENCES customer(customerID)
 );
 
 -- 테이블 생성: productOut
@@ -58,9 +58,11 @@ DROP TABLE IF EXISTS productOut;
 CREATE TABLE productOut (
     fruitOutLog INT AUTO_INCREMENT PRIMARY KEY,
     fruitID INT,
+    customerID INT,
     outDate TIMESTAMP,
     outQuantity INT,
-    FOREIGN KEY (fruitID) REFERENCES fruits(fruitID)
+    FOREIGN KEY (fruitID) REFERENCES fruits(fruitID),
+    FOREIGN KEY (customerID) REFERENCES customer(customerID)
 );
 
 -- 테이블 생성: productIn
@@ -85,9 +87,11 @@ CREATE TABLE actionRecognition (
 DROP TABLE IF EXISTS mismatchActionStand;
 CREATE TABLE mismatchActionStand (
     mismatchID INT AUTO_INCREMENT PRIMARY KEY,
-    standFruitID INT,
-    actionFruitID INT,
-    mismatch TIMESTAMP
+    mismatchTime TIMESTAMP,
+    fruitName VARCHAR(16),
+    beforeStandQuantity INT,
+    currentStandQuantity INT,
+    outQuantity INT
 );
 
 insert into customer values 

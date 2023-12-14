@@ -140,7 +140,7 @@ class ActionCam():
                         print()
 
             img = self.box_annotator.annotate(scene=img, detections=detections, labels=labels)           
-            cv2.putText(img, self.status, (0, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(img, self.status, (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2, cv2.LINE_AA)
 
             return img, self.output_data
 

@@ -13,7 +13,7 @@ class ImageReceiver(QThread):
         super().__init__()
         self.running = False
 
-        self.client = roslibpy.Ros(host='192.168.0.134', port=9090) 
+        self.client = roslibpy.Ros(host='localhost', port=9090) 
         self.client.run()
         
         self.listener = roslibpy.Topic(self.client, '/ImgNData', 'auto_store_package_msgs/msg/ImgNData')
@@ -30,8 +30,8 @@ class ImageReceiver(QThread):
         img = np.reshape(img_buf, (msg['img_height'], msg['img_width'], msg['img_channel']))
         self.update.emit(img)
         # cv2.imshow(img)
-        print(time.time() - self.before_time)
-        self.before_time = time.time()
+        # print(time.time() - self.before_time)
+        # self.before_time = time.time()
         
         
     def run(self):

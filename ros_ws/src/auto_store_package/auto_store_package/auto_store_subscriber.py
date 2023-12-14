@@ -71,10 +71,10 @@ def main(args=None) :
 
       # test code
       if key == ord('i'):
-        in_RFID_read = "getrfid1"
+        in_RFID_read = "getrfid0"
         # print(in_RFID_read)
       elif key == ord('o'):
-        out_RFID_read = "getrfid1"
+        out_RFID_read = "getrfid0"
         # print(out_RFID_read)
       else :
         in_RFID_read = None
@@ -136,7 +136,7 @@ def main(args=None) :
               else:
                 # customer 장바구니 update
                 customer.update_shopping_list(action_data['fruit_type'], action_data['fruit_quantity'])
-                # status.update_db.update_fruit_stock(action_data['fruit_type'], action_data['fruit_quantity'])
+                status.update_db.update_fruit_stock(customer, action_data['fruit_type'], action_data['fruit_quantity'])
 
           # 쇼핑 중이 아님
           # else:

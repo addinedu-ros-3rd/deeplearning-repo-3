@@ -45,7 +45,7 @@ def save_video(cam_type, video_name, img_list, frame_width, frame_height):
     out.release()
 
 
-def main(video_path = './test_sample/test_data.mp4'):
+def main(video_path = './test_sample/test_data_0.avi'):
     client = roslibpy.Ros(host='localhost', port=9090) 
     client.run()
 
@@ -90,10 +90,16 @@ def main(video_path = './test_sample/test_data.mp4'):
     lstm.eval()
 
     # CNN : MobileNet-V3
-    mobilenet = models.mobilenet_v3_small()
+    # mobilenet = models.mobilenet_v3_small()
+    # num_classes = 3
+    # mobilenet.classifier[-1] = nn.Linear(mobilenet.classifier[-1].in_features, num_classes)
+    # weights_path = './model_saved/MobileNetV3/mobilenetv3_weights_2.pt'
+    # mobilenet.load_state_dict(torch.load(weights_path))
+    # mobilenet.eval()
+    mobilenet = models.resnet18(pretrained=True)
     num_classes = 3
-    mobilenet.classifier[-1] = nn.Linear(mobilenet.classifier[-1].in_features, num_classes)
-    weights_path = './model_saved/MobileNetV3/mobilenetv3_weights_2.pt'
+    mobilenet.fc = nn.Linear(mobilenet.fc.in_features, num_classes)
+    weights_path = './model_saved/MobileNetV3/resnet18_weights.pt'
     mobilenet.load_state_dict(torch.load(weights_path))
     mobilenet.eval()
 
@@ -137,8 +143,8 @@ def main(video_path = './test_sample/test_data.mp4'):
                 # action_out_img_list.append(action_output_frame)
                 # stand_out_img_list.append(stand_output_frame)
                 
-                # cv2.imshow("Action Cam", action_output_frame)
-                # cv2.imshow("Stand Cam", stand_output_frame)
+                cv2.imshow("Action Cam", cv2.resize(action_output_frame, (int(frame_width * 0.6), int(frame_height * 0.6))))
+                cv2.imshow("Stand Cam", cv2.resize(stand_output_frame, (int(frame_width * 0.6), int(frame_height * 0.6))))
                 
                 resized = cv2.resize(action_output_frame, (resized_height, resized_width))
                 encoded = base64.b64encode(resized).decode('ascii')

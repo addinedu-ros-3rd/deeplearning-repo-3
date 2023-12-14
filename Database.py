@@ -47,8 +47,8 @@ class DB():
         except Exception as e:
             print(f" DB execute : {e}")
 
-        finally:
-            self.disconnect()
+        # finally:
+        #     self.disconnect()
 
 
     def fetchOne(self):
@@ -60,8 +60,8 @@ class DB():
         except Exception as e:
             print(f" DB fetchOne : {e}")
 
-        finally:
-            self.disconnect()
+        # finally:
+        #     self.disconnect()
 
 
     def fetchAll(self):
@@ -73,5 +73,5 @@ class DB():
         except Exception as e:
             print(f" DB fetchAll : {e}")
 
-        finally:
-            self.disconnect()
+        # finally:
+        #     self.disconnect()
