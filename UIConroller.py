@@ -30,7 +30,7 @@ class WindowClass(QMainWindow, from_class) :
         self.search_btn.clicked.connect(self.search)
 
         # 과일이 팔린 개수 로깅
-        # self.getFruits()
+        self.getFruits()
 
         # 테이블 컬럼 창 크기에 맞춰주기
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -50,7 +50,10 @@ class WindowClass(QMainWindow, from_class) :
         
 
         # 불일치 로깅
-        # self.mismatch()
+        self.mismatch()
+
+        # 매대 재고 가져오기
+        self.getStock()
 
     def updatePlayer(self, frame):
         self.image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -74,6 +77,7 @@ class WindowClass(QMainWindow, from_class) :
         self.table.clearContents()
         self.getFruits()
         self.mismatch()
+        self.getStock()
         # 고객 ID 입력값 변수로 저장
         self.customerId = self.customer_id.text()
         
@@ -165,6 +169,23 @@ class WindowClass(QMainWindow, from_class) :
             self.table_3.insertRow(resultRow)
             for i, v in enumerate(row):
                 self.table_3.setItem(resultRow, i, QTableWidgetItem(str(v)))
+
+    def getStock(self):
+        db = DB()
+        self.sql = """
+            select fruitName, stockStand
+            from fruits
+        """
+        db.execute(self.sql)
+        result = db.fetchAll()
+        db.disconnect()
+        result_list = []
+        for row in result:
+            result_list.append(row)
+
+        self.apple.setText(str(result_list[0][1]))
+        self.banana.setText(str(result_list[1][1]))
+        self.orange.setText(str(result_list[2][1]))
 
 
 
