@@ -72,7 +72,8 @@ class WindowClass(QMainWindow, from_class) :
     
     def search(self):
         self.table.clearContents()
-
+        self.getFruits()
+        self.mismatch()
         # 고객 ID 입력값 변수로 저장
         self.customerId = self.customer_id.text()
         
@@ -83,26 +84,25 @@ class WindowClass(QMainWindow, from_class) :
         
         db = DB()
         self.sql = """
-            SELECT c.customerID,
+            SELECT e.customerID,
             CASE WHEN e.enterStatus = '1' THEN e.enterenceTime ELSE NULL END AS inTime,
             CASE WHEN e.enterStatus = '0' THEN e.enterenceTime ELSE NULL END AS outTime,
             f.fruitName, po.outQuantity, po.outQuantity * f.price AS totalPrice
-            FROM customer c
-            LEFT JOIN enterence e ON e.customerID = c.customerID
-            LEFT JOIN productOut po ON po.customerID = c.customerID
+            FROM enterence e
+            LEFT JOIN productOut po ON po.customerID = e.customerID
             LEFT JOIN fruits f ON po.fruitID = f.fruitID
         """
         if self.customerId:
-            self.sql += f" WHERE c.customerID = {self.customerId}"
+            self.sql += f" WHERE e.customerID = {self.customerId}"
 
-        # # 날짜 범위 조건 추가
-        # if inTimeStart and inTimeEnd:
-        #     self.sql += f"WHERE e.enterenceTime BETWEEN '{inTimeStart}' AND '{inTimeEnd}'"
-        #     if outTimeStart and outTimeEnd:
-        #         self.sql += f" AND e.enterenceTime BETWEEN '{outTimeStart}' AND '{outTimeEnd}'"
-        # else:
-        #     if outTimeStart and outTimeEnd:
-        #         self.sql += f"WHERE e.enterenceTime BETWEEN '{outTimeStart}' AND '{outTimeEnd}'"
+        # 날짜 범위 조건 추가
+        if inTimeStart and inTimeEnd:
+            self.sql += f" AND e.enterenceTime BETWEEN '{inTimeStart}' AND '{inTimeEnd}'"
+            if outTimeStart and outTimeEnd:
+                self.sql += f" AND e.enterenceTime BETWEEN '{outTimeStart}' AND '{outTimeEnd}'"
+        else:
+            if outTimeStart and outTimeEnd:
+                self.sql += f" AND e.enterenceTime BETWEEN '{outTimeStart}' AND '{outTimeEnd}'"
             
         self.table.setRowCount(0)
 
@@ -127,15 +127,15 @@ class WindowClass(QMainWindow, from_class) :
         db=DB()
         
         self.sql = """
-            SELECT p.paymentTime, f.fruitName, s.outQuantity
-            FROM shoppingBasket s
-            LEFT JOIN payment p ON s.shoppingID = p.shoppingID
-            LEFT JOIN fruits f ON s.fruitID = f.fruitID
+            SELECT po.outDate, f.fruitName, po.outQuantity
+            FROM productOut po
+            JOIN fruits f ON po.fruitID = f.fruitID
         """
 
         db.execute(self.sql)
         result = db.fetchAll()
         db.disconnect()
+        self.table_2.setRowCount(0)
 
         for row in result:
             resultRow = self.table_2.rowCount()
@@ -158,6 +158,7 @@ class WindowClass(QMainWindow, from_class) :
         db.execute(self.sql)
         result = db.fetchAll()
         db.disconnect()
+        self.table_3.setRowCount(0)
 
         for row in result:
             resultRow = self.table_3.rowCount()
