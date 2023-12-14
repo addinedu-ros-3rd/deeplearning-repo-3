@@ -81,7 +81,7 @@ def main(args=None) :
       # stand_data, stand_time = receive_from_stand()       # Stand-Cam으로부터 값 수신
       rclpy.spin_once(node) # read action_data & stand_data
 
-      now_time = time.strftime("%Y%m%d-%H%M%S")
+      now_time = time.strftime("%Y-%m-%d %H:%M:%S")
 
       # 입구 RFID가 읽혀졌을 때,
       if in_RFID_read:

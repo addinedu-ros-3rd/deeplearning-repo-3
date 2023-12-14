@@ -20,7 +20,7 @@ class Update_DB():
             return customer_ID
         
         except Exception as e:
-            self.log.error(f"get_customer_info() is error")
+            print(f"get_customer_info() is error")
             return None 
 
 
@@ -49,7 +49,7 @@ class Update_DB():
         checkOut_time = customer.out_time
         price = customer.total_price
         try:
-            query = "insert into payment (customerID, enterenceTime, totalAmount) values (%s, %s, %s)"
+            query = """insert into payment (customerID, enterenceTime, totalAmount) values (%s, %s, %s)"""
             self.db.execute(query, (customer_ID, checkOut_time, price))
         except Exception as e:
             self.log.error(f"make_payment() is error")
@@ -58,13 +58,14 @@ class Update_DB():
 
     # 행동 인식 table : logging
     def log_action_state(self, action_time, action_type, fruit_id):
-        print(action_time, action_type, fruit_id)
+        # print(action_time, action_type, fruit_id)
         try:
-            query = "insert into actionRecognition (fruitID, actionTime, actionType) values (%s, %s, %s)"
+            query = """insert into actionRecognition (fruitID, actionTime, actionType) values (%s, %s, %s)"""
             self.db.execute(query, (fruit_id, action_time, action_type))
+            
         except Exception as e:
             self.log.error(f"log_action_state() is error")
-        
+            print(f"log_action_state() is error {type(e)} - {e}")
 
 
     # # 불일치 table : logging

@@ -52,7 +52,7 @@ class DB():
         try:
             self.checkIfConnected()
             self.cursor.execute(query, params)
-            # self.conn.commit()
+            self.conn.commit()
 
         except Exception as e:
             self.log.error(f" DB execute : {e}")
