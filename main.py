@@ -90,18 +90,18 @@ def main(video_path = './test_sample/test_data_0.avi'):
     lstm.eval()
 
     # CNN : MobileNet-V3
-    # mobilenet = models.mobilenet_v3_small()
-    # num_classes = 3
-    # mobilenet.classifier[-1] = nn.Linear(mobilenet.classifier[-1].in_features, num_classes)
-    # weights_path = './model_saved/MobileNetV3/mobilenetv3_weights_2.pt'
-    # mobilenet.load_state_dict(torch.load(weights_path))
-    # mobilenet.eval()
-    mobilenet = models.resnet18(pretrained=True)
+    mobilenet = models.mobilenet_v3_small()
     num_classes = 3
-    mobilenet.fc = nn.Linear(mobilenet.fc.in_features, num_classes)
-    weights_path = './model_saved/MobileNetV3/resnet18_weights.pt'
+    mobilenet.classifier[-1] = nn.Linear(mobilenet.classifier[-1].in_features, num_classes)
+    weights_path = './model_saved/MobileNetV3/mobilenetv3_weights_2.pt'
     mobilenet.load_state_dict(torch.load(weights_path))
     mobilenet.eval()
+    # mobilenet = models.resnet18(pretrained=True)
+    # num_classes = 3
+    # mobilenet.fc = nn.Linear(mobilenet.fc.in_features, num_classes)
+    # weights_path = './model_saved/MobileNetV3/resnet18_weights.pt'
+    # mobilenet.load_state_dict(torch.load(weights_path))
+    # mobilenet.eval()
 
     yolo = YOLO('./model_saved/YOLO/yolo_best.pt')
 

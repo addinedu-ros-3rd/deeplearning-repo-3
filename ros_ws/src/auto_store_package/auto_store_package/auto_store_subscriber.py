@@ -136,7 +136,7 @@ def main(args=None) :
               else:
                 # customer 장바구니 update
                 customer.update_shopping_list(action_data['fruit_type'], action_data['fruit_quantity'])
-                status.update_db.update_fruit_stock(customer, action_data['fruit_type'], action_data['fruit_quantity'])
+                # status.update_db.update_fruit_stock(customer, action_data['fruit_type'], action_data['fruit_quantity'])
 
           # 쇼핑 중이 아님
           # else:
