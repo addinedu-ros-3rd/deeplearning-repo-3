@@ -8,8 +8,6 @@ from supervision.geometry.core import Rect
 class Detector:
 
     def __init__(self, model, frame_width, frame_height, roi_txt):
-
-        # 0:person 49:orange 47:apple 46:banana
         self.item_dict = {
             0: "Banana",
             1: "Apple",
@@ -70,27 +68,31 @@ class Detector:
         results = self.model(frame)[0]
         detections = sv.Detections.from_yolov8(results)
         detections = detections[detections.confidence > 0.5]
-        # print(detections)
-
-        for zone, zone_annotator, zone_annot_point, box_annotator\
-            in zip(self.zones, self.zone_annotators, self.zone_annotator_points, self.box_annotators):
+                
+        total_table_dict = {}
+        
+        for idx, (zone, zone_annotator, zone_annot_point, box_annotator)\
+            in enumerate(zip(self.zones, self.zone_annotators, self.zone_annotator_points, self.box_annotators)):
             
             mask = zone.trigger(detections=detections)
             detections_in_mask = detections[mask]
 
             # frame = box_annotator.annotate(scene=frame, detections=detections_in_mask)
             frame = zone_annotator.annotate(scene=frame)
-
+            each_roi_dict = {}
             for i, id in enumerate(self.item_dict.keys()):
                 detections_id = detections_in_mask[detections_in_mask.class_id == id]
 
                 frame = box_annotator.annotate(scene=frame, detections=detections_id)
 
                 text = f"{self.item_dict[id]}: {len(detections_id.class_id)}"
-
+                each_roi_dict[self.item_dict[id]] = len(detections_id.class_id)
                 frame = self.draw_text(frame, i, text, zone_annot_point, zone_annotator.color.as_bgr())
             
-        return frame
+            total_table_dict[idx] = each_roi_dict
+            data = total_table_dict
+
+        return frame, data
 
     
     
