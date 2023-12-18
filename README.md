@@ -5,6 +5,10 @@
 ### Action recognition 기반으로 어떤 과일을 샀는지 인식하면 DB 및 PyQt를 이용하여 해당 물건을 자동으로 결제
 ### Yolov8 기반 Object counting을 활용하여 매대별 과일 종류 및 개수 파악
 
+## 🏁 발표 자료
+https://docs.google.com/presentation/d/1L9lDK6GptjHDVC1pk5et46PFg5JRmc-w_r4A61HhIeM/edit#slide=id.g263d5bba2a3_0_5
+
+
 ## 🥇 시스템 구성도
 ![시스템구성도_최종 drawio](https://github.com/haneol0415/calculator/assets/61872888/1d7badf6-3f14-4edd-b98b-f63a84b99d1e)
 
@@ -15,7 +19,10 @@
 ![입장_시퀀스_다이어그램 drawio](https://github.com/haneol0415/calculator/assets/61872888/5a6749a7-7f3b-4fae-b796-7788e9ed971d)
 ![쇼핑_시퀀스_다이어그램 drawio (1)](https://github.com/haneol0415/calculator/assets/61872888/de376278-bb08-4448-b887-2bbc338b4c9b)
 
-#### 퇴장 및 구매 시나리오 (ToDo)
+
+## 🖌️ GUI & DB
+![image](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/2f36e2e5-d854-430b-9c5b-ec44c08051e0)
+
 
 ## 🏅 DBMS 구성도
 ![dl_db_result drawio (3)](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/e9949bd6-afa5-4538-bbf2-fa8c182fc87b)
