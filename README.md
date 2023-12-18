@@ -26,8 +26,3 @@ https://docs.google.com/presentation/d/1L9lDK6GptjHDVC1pk5et46PFg5JRmc-w_r4A61Hh
 
 ## 🏅 DBMS 구성도
 ![dl_db_result drawio (3)](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/e9949bd6-afa5-4538-bbf2-fa8c182fc87b)
-
-## 💎 진행 상황
-1. 영상 인식: Action recognition, Object counting 영상 인식 구현 및 테스트 완료
-2. DB 및 PyQt, 통신 파트 각자 구현 중
-3. 하나로 합쳐서 데모 제작 예정
