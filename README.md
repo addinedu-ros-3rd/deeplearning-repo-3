@@ -21,7 +21,8 @@ https://docs.google.com/presentation/d/1L9lDK6GptjHDVC1pk5et46PFg5JRmc-w_r4A61Hh
 
 
 ## 🖌️ GUI & DB
-![image](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/2f36e2e5-d854-430b-9c5b-ec44c08051e0)
+![image](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/7fb4d54b-dad2-4dfa-b5d4-e06d7ecf25a7)
+
 
 
 ## 🏅 DBMS 구성도
