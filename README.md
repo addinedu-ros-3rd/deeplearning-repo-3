@@ -20,9 +20,8 @@ https://docs.google.com/presentation/d/1L9lDK6GptjHDVC1pk5et46PFg5JRmc-w_r4A61Hh
 ![쇼핑_시퀀스_다이어그램 drawio (1)](https://github.com/haneol0415/calculator/assets/61872888/de376278-bb08-4448-b887-2bbc338b4c9b)
 
 
-## 🖌️ GUI & DB
+## 🖌️ GUI
 ![image](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/7fb4d54b-dad2-4dfa-b5d4-e06d7ecf25a7)
-
 
 
 ## 🏅 DBMS 구성도
