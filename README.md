@@ -50,3 +50,31 @@ TBD
 
 ## 🏁 발표 자료 링크
 https://docs.google.com/presentation/d/1L9lDK6GptjHDVC1pk5et46PFg5JRmc-w_r4A61HhIeM/edit#slide=id.g263d5bba2a3_0_5
+
+
+## 개발 환경 설정
+
+
+
+> Main 시스템
+Ubuntu 22.04
+ROS2 Humble
+    1. install ros2 humble
+https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
+    2. sudo apt-get install ros-humble-rosbridge-server
+    3. cd ros_ws
+    4. source /opt/ros/humble/setup.bash
+    5. colcon build
+    6. source install/local_setup.bash
+    7. cmd 1 -> ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+    8. cmd 2 -> ros2 run auto_store_package auto_store_subscriber
+
+
+> 전체 python requirements
+    numpy
+    opencv-python
+    roslibpy
+    torch
+    mysql-connector-python
+    PyQt5==5.14.2
+    PyQt5-sip
