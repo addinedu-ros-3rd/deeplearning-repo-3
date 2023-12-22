@@ -7,7 +7,9 @@
 
 
 ## 🥇 시스템 구성
-![시스템구성도_최종 drawio](https://github.com/haneol0415/calculator/assets/61872888/1d7badf6-3f14-4edd-b98b-f63a84b99d1e)
+<p align="center">
+  <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/de7222e0-8f16-41d1-b555-d392aa396d1d" width="80%" style="float:left">
+</p>
 
 
 ## 👨‍👧‍👦 팀원 및 역할
@@ -31,13 +33,17 @@
 TBD
 
 ## 🥇 프로젝트 소개 
-### - USECASE Diagram
-![Use_Case drawio (1)](https://github.com/haneol0415/calculator/assets/61872888/4819b346-45ac-46a7-9ddc-0a321045a179)
+### - USE CASE Diagram
+<p align="center">
+  <img src="https://github.com/haneol0415/calculator/assets/61872888/4819b346-45ac-46a7-9ddc-0a321045a179" width="90%" style="float:left">
+</p>
 
 
 ### - Sequence Diagram
-![입장_시퀀스_다이어그램 drawio](https://github.com/haneol0415/calculator/assets/61872888/5a6749a7-7f3b-4fae-b796-7788e9ed971d)
-![쇼핑_시퀀스_다이어그램 drawio (1)](https://github.com/haneol0415/calculator/assets/61872888/de376278-bb08-4448-b887-2bbc338b4c9b)
+<p align="center">
+  <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/a4fd1508-cc41-45e2-bbb0-19b58027f95b" width="90%" style="float:left">
+</p>
+
 
 
 ## 🖌️ GUI
