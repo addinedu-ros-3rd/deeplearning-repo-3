@@ -27,14 +27,17 @@
 
 
 ## 🎯 기술 스택
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 
 
-|      |      |      |      |      |
-|------|------|------|------|------|
-|개발 환경|<img src="https://img.shields.io/badge/Ubuntu-#E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">|
+
+|      |      |
+|------|------|
+|개발 환경|<img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">, <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=PyTorch&logoColor=white">, <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=OpenCV&logoColor=white">|
 |언어|<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">|
-|DB| |
+|DB|<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">, <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white">|
+|GUI|<img src="https://img.shields.io/badge/Qt-41CD52?style=for-the-badge&logo=Qt&logoColor=white">|
+|통신|<img src="https://img.shields.io/badge/ROS-22314E?style=for-the-badge&logo=ROS&logoColor=white">|
+
 
 ## 🥇 프로젝트 소개 
 ### - USE CASE Diagram
