@@ -13,8 +13,8 @@
 
 
 ## 👨‍👧‍👦 팀원 및 역할
-| 이름 | 역할 |
-|------|--------|
+|이름|역할|
+|------|------|
 |강한얼|객체 인식 모델 YOLOv8 학습, 딥러닝 기반 고객 행동 인식 모델 학습, 중앙 시스템 Main 함수 설계, 시스템 구성도/ Use case/ Sequence diagram 제작|
 |김준표|딥러닝 기반 고객 행동 인식 모델 학습 및 Test(Rule-based), 시스템 하드웨어 구성도 제작(일부), roslibpy 기반 영상 이미지 통신 및 PyQt 출력(일부)|
 |조태상|매대의 과일 종류별 수량 인식 딥러닝 모델(일부), 시스템 데이터 저장을 위한 DB 개발, 관리자 시스템 GUI 개발
@@ -31,6 +31,12 @@
 
 <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
 TBD
+
+|      |      |
+|------|------|
+|개발 환경| |
+|기술|딥러닝 기반 고객 행동 인식 모델 학습 및 Test(Rule-based), 시스템 하드웨어 구성도 제작(일부), roslibpy 기반 영상 이미지 통신 및 PyQt 출력(일부)|
+|커뮤니케이션|딥러닝 기반 고객 행동 인식 모델 학습 및 Test(Rule-based), 시스템 하드웨어 구성도 제작(일부), roslibpy 기반 영상 이미지 통신 및 PyQt 출력(일부)|
 
 ## 🥇 프로젝트 소개 
 ### - USE CASE Diagram
