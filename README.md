@@ -54,11 +54,64 @@
 
 
 ## 🖌️ GUI
-![image](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/87626122/7fb4d54b-dad2-4dfa-b5d4-e06d7ecf25a7)
+![gui_num](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/21814471-3aca-42fe-8dc0-d7824f4a837e)
+### - GUI 설명
+① 특정 고객 ID 검색(ID가 없을 경우 검색되지 않음)
 
+② 입장/퇴장 시간 선택(달력으로 년월일 선택) 
+
+③ 검색 결과 및 검색 필터(고객 ID, 입장/퇴장 시간) 초기화 
+
+④ 검색 : 현재 입력된 조건으로 DB 조회 
+
+⑤ DB 조회 결과 표시 
+
+⑥ 매대에 있는 과일과 결제된 과일의 불일치 로그 표시 
+
+⑦ 매대에 남아있는 종류별 과일 개수 표시 
+
+⑧ 과일이 팔린 시간, 종류, 개수를 DB에서 조회후 표시 
+
+⑨ CCTV 현재 화면 
+
+### - GUI 사용 방법
+고객이 매장에 입장하면, DB에 고객정보가 update
+
+입장한 고객을 결과화면에서 보고싶으면 search 버튼 push
+
+고객이 원하는 과일을 고르고 매장 밖으로 나가면 DB에 결제할 과일이 update
+
+고객이 결제한 과일과 매대에서 사라진 과일이 다르면 불일치 로그에 정보가 보임
+
+매대에 남아있는 과일을 보고싶으면 search 버튼 push
+
+팔린 과일의 log를 보고싶으면 search 버튼 push
+
+cctv는 매대와 고객이 과일을 고르는 영상을 실시간으로 보고 있음
 
 ## 🏅 DBMS 구성도
-![dl_db_result drawio (3)](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/e9949bd6-afa5-4538-bbf2-fa8c182fc87b)
+![ERD drawio](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/e7916564-5a40-4a7f-9cbb-9a284ca5601b)
+
+### - DB 테이블 기능
+productIn : 입고되는 과일을 관리하기 위한 테이블
+
+enterence : 고객이 입장하는 정보를 저장하기 위한 테이블
+
+payment : 고객이 매장 밖으로 나가면 결제된 정보들을 저장하기 위한 테이블
+
+fruits : 현재 매장에 남아있는 과일을 관리하기 위한 테이블
+
+customer : 고객을 관리하기 위한 테이블
+
+shoppingBasket : 고객이 매장에서 과일을 선택하고 매장밖으로 나가기 전까지 선택한 과일을 저장하는 테이블
+
+actionRecognition : 고객이 구매를 하기위한 인식된 행동을 저장하는 테이블
+
+productOut : 고객이 사간 과일의 정보를 저장하기 위한 테이블
+
+actionType : 고객이 과일을 사기 위한 4가지 타입의 행동을 정의한 테이블
+
+mistmatchActionStand : 고객이 사간 과일과 매대에서 사라진 과일의 종류와 개수가 다를 때 정보를 알기 위해 각 정보를 저장하는 테이블
 
 
 ## 🏁 발표 자료 링크
