@@ -29,14 +29,12 @@
 ## 🎯 기술 스택
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 
-<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
-TBD
 
-|      |      |
-|------|------|
-|개발 환경| |
-|기술|딥러닝 기반 고객 행동 인식 모델 학습 및 Test(Rule-based), 시스템 하드웨어 구성도 제작(일부), roslibpy 기반 영상 이미지 통신 및 PyQt 출력(일부)|
-|커뮤니케이션|딥러닝 기반 고객 행동 인식 모델 학습 및 Test(Rule-based), 시스템 하드웨어 구성도 제작(일부), roslibpy 기반 영상 이미지 통신 및 PyQt 출력(일부)|
+|      |      |      |      |      |
+|------|------|------|------|------|
+|개발 환경|<img src="https://img.shields.io/badge/Ubuntu-#E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">|
+|언어|<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">|
+|DB| |
 
 ## 🥇 프로젝트 소개 
 ### - USE CASE Diagram
