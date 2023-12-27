@@ -1,6 +1,8 @@
 # 딥러닝 기반의 무인 매장 시스템
+<p align="center">
+  <img src="images/final_demo.gif" width="70%" style="float:left"/>
+</p>
 
-![](images/deeplearning_README_demo.gif)
 ---
 ## Index
 - [📖 프로젝트 개요](#📖-프로젝트-개요)
