@@ -52,11 +52,21 @@
 ## 🥇 프로젝트 소개 
 ### USE CASE Diagram
 <p align="center">
-  <img src="https://github.com/haneol0415/calculator/assets/61872888/4819b346-45ac-46a7-9ddc-0a321045a179" width="90%" style="float:left">
+  <img src="https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/61872888/ed9649ac-6de4-4751-8814-f932d642550c" width="90%" style="float:left">
 </p>
 
 
 ### Sequence Diagram
+- 출입 시나리오
+  - 고객이 신용 카드를 태그하여 매장에 입장 시 DB로부터 고객 정보를 조회하여 시스템 상의 가상의 장바구니를 생성, 고객 출입 기록을 저장
+- 쇼핑 시나리오
+  - 고객이 매장 내 카메라에 인식 될 경우, 고객 행동을 인식하고 행동 로그를 기록
+  - 고객의 구매 행동을 인식하는 경우, 매대 위 상품 수량 변화와 비교하여 불일치가 발생하는지 확인 (불일치 로그 기록)
+  - 행동 인식 결과를 바탕으로 고객의 가상의 장바구니 업데이트
+- 퇴장 및 구매 시나리오
+  - 고객이 출구에 신용 카드를 태그할 경우, 고객의 퇴장 기록을 저장
+  - 가상의 장바구니 내 품목별 가격을 DB에서 조회하여 총 금액 계산
+  - 구매 기록을 DB에 저장
 <p align="center">
   <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/a4fd1508-cc41-45e2-bbb0-19b58027f95b" width="90%" style="float:left">
 </p>
