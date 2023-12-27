@@ -2,8 +2,7 @@
 
 # 딥러닝 기반의 무인 매장 시스템
 ## 📖 프로젝트 개요
-### Action recognition 기반으로 어떤 과일을 샀는지 인식하면 DB 및 PyQt를 이용하여 해당 물건을 자동으로 결제
-### Yolov8 기반 Object counting을 활용하여 매대별 과일 종류 및 개수 파악
+딥러닝 기반의 행동 인식 및 객체 인식 모델을 사용하여 매장에 입장한 고객이 별도의 계산 절차 없이 물건을 구매하고, 관리자는 GUI를 통해 출입 상태, 재고 상태 등을 확인할 수 있는 시스템
 
 
 ## 🥇 시스템 구성
@@ -11,51 +10,77 @@
   <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/de7222e0-8f16-41d1-b555-d392aa396d1d" width="80%" style="float:left"/>
 </p>
 
+### 기능 리스트
+- 매장 내 영상 인식 시스템
+  - Action Recognition Program : 카메라 영상으로부터 고객의 구매 행동을 인식
+  - Stand Counter Program : 카메라 영상으로부터 매대 위의 상품 수량을 카운트
+
+- 중앙 시스템
+  - 통신 :
+  - Main : 매장 내 영상 인식 시스템의 인식 결과를 취합하여 처리
+  - DB : 매장 이용 기록, 시스템 로그 저장
+  - File storage : CCTV 영상을 저장
+
+- 사용자
+  - System GUI : 관리자가 매장 상태, 구매 기록, 재고 상태 등을 조회
+  - CCTV Viewer : CCTV 영상 조회
+
 
 ## 👨‍👧‍👦 팀원 및 역할
-|이름|역할|
-|------|------|
-|강한얼|객체 인식 모델 YOLOv8 학습, 딥러닝 기반 고객 행동 인식 모델 학습, 중앙 시스템 Main 함수 설계, 시스템 구성도/ Use case/ Sequence diagram 제작|
-|김준표|딥러닝 기반 고객 행동 인식 모델 학습 및 Test(Rule-based), 시스템 하드웨어 구성도 제작(일부), roslibpy 기반 영상 이미지 통신 및 PyQt 출력(일부)|
-|조태상|매대의 과일 종류별 수량 인식 딥러닝 모델(일부), 시스템 데이터 저장을 위한 DB 개발, 관리자 시스템 GUI 개발
-|조홍기|매대의 과일 종류별 수량 인식 딥러닝 모델 개발(전체), 무인 매장 시스템 - 중앙 관리 시스템간 통신 모듈 개발|
-|최규호|시스템 데이터 저장을 위한 DB 개발|
+|구 분|이 름|역 할|
+|------|------|------|
+|팀장|김준표|딥러닝 기반 고객 행동 인식 모델 학습 및 Test(Rule-based), 시스템 하드웨어 구성도 제작(일부), roslibpy 기반 영상 이미지 통신 및 PyQt 출력(일부)|
+|팀원|강한얼|객체 인식 모델 YOLOv8 학습, 딥러닝 기반 고객 행동 인식 모델 학습, 중앙 시스템 Main 함수 설계, 시스템 구성도 / Use case/ Sequence diagram 제작|
+|팀원|조태상|매대의 과일 종류별 수량 인식 딥러닝 모델(일부), 시스템 데이터 저장을 위한 DB 개발, 관리자 시스템 GUI 개발
+|팀원|조홍기|매대의 과일 종류별 수량 인식 딥러닝 모델 개발(전체), 무인 매장 시스템 - 중앙 관리 시스템간 통신 모듈 개발|
+|팀원|최규호|시스템 데이터 저장을 위한 DB 개발|
 
 
 ## 📆 프로젝트 기간
-### 2023.11.16~2023.12.15
+2023.11.16 ~ 2023.12.15 (10일)
 
 
 ## 🎯 기술 스택
-
-
-
-|      |      |
-|------|------|
-|개발 환경|<img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">, <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=PyTorch&logoColor=white">, <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=OpenCV&logoColor=white">|
-|언어|<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">|
-|DB|<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">, <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white">|
-|GUI|<img src="https://img.shields.io/badge/Qt-41CD52?style=for-the-badge&logo=Qt&logoColor=white">|
-|통신|<img src="https://img.shields.io/badge/ROS-22314E?style=for-the-badge&logo=ROS&logoColor=white">|
+|      |      |      |      |
+|------|------|------|------|
+|개발 환경|<img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white"> ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white) ![Github](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white)|언어|<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">|
+|딥러닝|<img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=PyTorch&logoColor=white"> <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=OpenCV&logoColor=white">|DB|<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white">|
+|GUI|<img src="https://img.shields.io/badge/Qt-41CD52?style=for-the-badge&logo=Qt&logoColor=white">|통신|![ROS2](https://img.shields.io/badge/ROS2-22314E?style=for-the-badge&logo=ROS&logoColor=white)|
+|커뮤니케이션|![Jira](https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white) ![Confluence](https://img.shields.io/badge/Confluence-172B4D?style=for-the-badge&logo=Confluence&logoColor=white) ![Slack](https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)|
 
 
 ## 🥇 프로젝트 소개 
-### - USE CASE Diagram
+### USE CASE Diagram
 <p align="center">
-  <img src="https://github.com/haneol0415/calculator/assets/61872888/4819b346-45ac-46a7-9ddc-0a321045a179" width="90%" style="float:left">
+  <img src="https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/61872888/ed9649ac-6de4-4751-8814-f932d642550c" width="90%" style="float:left">
 </p>
 
 
-### - Sequence Diagram
+### Sequence Diagram
+- 출입 시나리오
+  - 고객이 신용 카드를 태그하여 매장에 입장 시 DB로부터 고객 정보를 조회하여 시스템 상의 가상의 장바구니를 생성, 고객 출입 기록을 저장
+- 쇼핑 시나리오
+  - 고객이 매장 내 카메라에 인식 될 경우, 고객 행동을 인식하고 행동 로그를 기록
+  - 고객의 구매 행동을 인식하는 경우, 매대 위 상품 수량 변화와 비교하여 불일치가 발생하는지 확인 (불일치 로그 기록)
+  - 행동 인식 결과를 바탕으로 고객의 가상의 장바구니 업데이트
+- 퇴장 및 구매 시나리오
+  - 고객이 출구에 신용 카드를 태그할 경우, 고객의 퇴장 기록을 저장
+  - 가상의 장바구니 내 품목별 가격을 DB에서 조회하여 총 금액 계산
+  - 구매 기록을 DB에 저장
 <p align="center">
   <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/a4fd1508-cc41-45e2-bbb0-19b58027f95b" width="90%" style="float:left">
 </p>
 
+## 딥러닝 인식 시스템
 
+## 통신 모듈
 
 ## 🖌️ GUI
-![gui_num](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/21814471-3aca-42fe-8dc0-d7824f4a837e)
-### - GUI 설명
+<p align="center">
+  <img src="https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/21814471-3aca-42fe-8dc0-d7824f4a837e" width="90%" style="float:left">
+</p>
+
+### GUI 설명
 ① 특정 고객 ID 검색(ID가 없을 경우 검색되지 않음)
 
 ② 입장/퇴장 시간 선택(달력으로 년월일 선택) 
@@ -74,10 +99,10 @@
 
 ⑨ CCTV 현재 화면 
 
-### - GUI 사용 방법
+### GUI 사용 방법
 고객이 매장에 입장하면, DB에 고객정보가 update
 
-입장한 고객을 결과화면에서 보고싶으면 search 버튼 push
+입장한 고객을 결과화면에서 보고싶으면 search 버튼 클릭
 
 고객이 원하는 과일을 고르고 매장 밖으로 나가면 DB에 결제할 과일이 update
 
@@ -92,7 +117,7 @@ cctv는 매대와 고객이 과일을 고르는 영상을 실시간으로 보고
 ## 🏅 DBMS 구성도
 ![ERD drawio](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/e7916564-5a40-4a7f-9cbb-9a284ca5601b)
 
-### - DB 테이블 기능
+### DB 테이블 기능
 productIn : 입고되는 과일을 관리하기 위한 테이블
 
 enterence : 고객이 입장하는 정보를 저장하기 위한 테이블
