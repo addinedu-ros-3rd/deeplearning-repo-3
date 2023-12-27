@@ -101,37 +101,45 @@
 </p>
 
 ## 🧠 딥러닝 인식 시스템
-딥러닝 기반의 영상 인식 시스템을 사용하여 매장 내 고객 구매 행동 인식 및 매대 위 상품 카운트
+- 매장 내 고객 구매 행동 인식
+- 매대 위 상품 카운트하여 재고 파악 및 구매 결과를 더블 체크
 
-### 고객 구매 행동 인식 모델
+### 구매 행동 인식 모델
 #### 수행 태스크
-  - Task 1 : 고객 행동 변화 인식 (4가지 행동 타입 : Nothing, Picking Up, Holding, Putting Down)
-  - Task 2 : 집은 상품 인식 (3가지 상품 : Banana, Apple, Orange)
-
-#### 데이터 수집
-15분 가량의 고객 행동 비디오 수집
-비디오 프레임 중 일부 이미지 내 객체 Labeling
+  - Task 1 : 고객 행동 인식
+  - Task 2 : 집은 상품 인식
 
 #### 모델 선택
-아래 3가지 Model architecture를 설계하여 가장 높은 성능을 보이는 Separated inference model을 선택
+아래 3가지 Model architecture를 설계하여 가장 높은 성능을 보이는 **Separated inference model**을 선택
 - Rule-basd model
 - Multi-task model
-- Separated inference model
+- Separated-inference model
 
 Model architecture 설계 및 성능 비교 세부 설명 (URL)
 
 #### Separated inference model
-그림
+1. Model architecture
+<p align="center">
+  <img src="images/dl_model_architecture.png" width="80%" style="float:left">
+</p>
 
-설명
-- 입력 데이터
-	- Human pose estimation model outputs (관절 key points 좌표)
-	- Object detection model outputs (검출된 객체의 좌표와 클래스)
+2. Components
+  - Human pose estimation model : Mediapipe (pre-trained)
+  - Object detection model : YOLOv8 (from scratch)
+  - Action recognition model : LSTM (from scratch)
+  - CNN model : MobileNet-V3 (from scratch)
 
-- Human pose estimation model : Mediapipe (pre-trained)
-- Object detection model : YOLOv8 (from scratch)
-- Action recognition model : LSTM (from scratch)
-- Image classification model : MobileNet-V3 (from scratch)
+3. Inference
+  - 행동 인식
+    - 카메라 영상을 입력으로 받음
+    - Human pose estimation model, object detection model을 통해 관절 key points - 좌표와 상품 좌표를 추출
+    - 추출된 좌표 값들을 action recognition model인 LSTM의 input으로 사용
+    - 50 frame(sequence length of LSTM)이 마다 고객 행동을 예측
+  - 집은 상품 인식
+    - 예측된 행동이 "Holding"이면 마지막 프래임을 고객이 집은 상품을 인식(분류) CNN의 input으로 사용
+    - CNN을 통해 고객이 집은 상품을 인식
+
+
 
 ### 매대 위 상품 카운트 모델
 YOLO v8 기반 SuperVision 사용
