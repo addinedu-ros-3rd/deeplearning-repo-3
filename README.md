@@ -1,4 +1,6 @@
 # 딥러닝 기반의 무인 매장 시스템
+
+![](https://drive.google.com/file/d/1FJfazh3FWGd8-XIraMB9AlwlfaSfHqlv/view?usp=drive_link)
 ---
 ## Index
 - [📖 프로젝트 개요](#📖-프로젝트-개요)
@@ -10,8 +12,8 @@
 - [🥇 프로젝트 소개](#🥇-프로젝트-소개)
   - [USE CASE Diagram](#use-case-diagram)
   - [Sequence Diagram](#sequence-diagram)
-- [딥러닝 인식 시스템](#딥러닝-인식-시스템)
-- [통신 모듈](#통신-모듈)
+- [🧠 딥러닝 인식 시스템](#🧠-딥러닝-인식-시스템)
+- [📶 통신 모듈](#📶-통신-모듈)
 - [🖌️ GUI](#🖌️-gui)
   - [GUI 설명](#gui-설명)
   - [GUI 사용 방법](#gui-사용-방법)
@@ -19,10 +21,13 @@
 - [DB 테이블 기능](#db-테이블-기능)
 - [🏁 발표 자료 링크](#🏁-발표-자료-링크)
 - [⚙️개발 환경 설정](#⚙️-개발-환경-설정)
+
 ---
+
 ## 📖 프로젝트 개요
 딥러닝 기반의 행동 인식 및 객체 인식 모델을 사용하여 매장에 입장한 고객이 별도의 계산 절차 없이 물건을 구매하고, 관리자는 GUI를 통해 출입 상태, 재고 상태 등을 확인할 수 있는 시스템
 
+---
 
 ## 🥇 시스템 구성
 <p align="center">
@@ -35,7 +40,7 @@
   - Stand Counter Program : 카메라 영상으로부터 매대 위의 상품 수량을 카운트
 
 - **중앙 시스템**
-  - 통신 :
+  - 통신 : ROS Bridge Server의 Topic을 Subscribe하여 Cam 영상 및 데이터 수신
   - Main : 매장 내 영상 인식 시스템의 인식 결과를 취합하여 처리
   - DB : 매장 이용 기록, 시스템 로그 저장
   - File storage : CCTV 영상을 저장
@@ -44,6 +49,7 @@
   - System GUI : 관리자가 매장 상태, 구매 기록, 재고 상태 등을 조회
   - CCTV Viewer : CCTV 영상 조회
 
+---
 
 ## 👨‍👧‍👦 팀원 및 역할
 |구 분|이 름|역 할|
@@ -67,6 +73,7 @@
 |GUI|<img src="https://img.shields.io/badge/Qt-41CD52?style=for-the-badge&logo=Qt&logoColor=white">|통신|![ROS2](https://img.shields.io/badge/ROS2-22314E?style=for-the-badge&logo=ROS&logoColor=white)|
 |커뮤니케이션|![Jira](https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white) ![Confluence](https://img.shields.io/badge/Confluence-172B4D?style=for-the-badge&logo=Confluence&logoColor=white) ![Slack](https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)|
 
+---
 
 ## 🥇 프로젝트 소개 
 ### USE CASE Diagram
@@ -96,7 +103,7 @@
   <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/a4fd1508-cc41-45e2-bbb0-19b58027f95b" width="90%" style="float:left">
 </p>
 
-## 딥러닝 인식 시스템
+## 🧠 딥러닝 인식 시스템
 딥러닝 기반의 영상 인식 시스템을 사용하여 매장 내 고객 구매 행동 인식 및 매대 위 상품 카운트
 
 ### 고객 구매 행동 인식 모델
@@ -104,14 +111,54 @@
   - Task 1 : 
 
 ### 매대 위 상품 카운트 모델
+YOLO v8 기반 SuperVision 사용
+```utils/make_ROI.py```로 매대 영역의 Polygon을 제작하여 save_roi.txt로 저장 후 Polygon 영역 내의 객체 개수 인식.
+[자세한 내용](https://whghdrl9977.atlassian.net/wiki/spaces/T3/blog/2023/12/06/3244062)
 
-## 통신 모듈
+---
 
+## 📶 통신 모듈
+- 사용 모듈
+  - ROS2
+  - ROS bridge(Websocket Server)
+  - roslibpy
+
+### roslibpy
+  - Non-ROS system에서 Topic, Service, Action 작업을 하기 위한 library
+  - Cam 시스템 경량화를 위해 사용
+  - Json 형태로 데이터 전송
+
+### ROS bridge
+  - Non-ROS2 시스템과의 통신을 위해 사용
+
+### Custom Message - ImgNData
+  - sensor_msgs/msg/CompressedImage 기반, 매대 Data, 행동 Data를 추가한 Custom Message 제작
+
+  - CompressedImg를 만들어서 보내고 수신하여 이미지로 만드는 일련의  과정 라이브러리 참고하여 직접 구현
+
+  - 참조 : 
+    - [sensor_msgs/msg/Image](https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html)
+    - [sensor_msgs/msg/CompressedImage](https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/CompressedImage.html)
+    - [github : cv_bridge - compressed_imgmsg_to_cv2](https://github.com/ros-perception/vision_opencv/blob/rolling/cv_bridge/python/cv_bridge/core.py#L106)
+
+  - 구조
+
+  |타입|변수명|비고|
+  |---|---|---|
+  |uint16|img_width||
+  |uint16|img_width||
+  |uint16|img_width||
+  |uint8[]|img_data|320 x 320 resize 후 전송|
+  |string|action_data|dict를 str로 dump하여 전송|
+  |string|stand_data|dict를 str로 dump하여 전송|
+
+---
 
 ## 🖌️ GUI
+
 <p align="center">
   <img src="https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/21814471-3aca-42fe-8dc0-d7824f4a837e" width="90%" style="float:left">
-</p>
+</p>  
 
 ### GUI 설명
 ① 특정 고객 ID 검색(ID가 없을 경우 검색되지 않음)
@@ -147,6 +194,8 @@
 
 cctv는 매대와 고객이 과일을 고르는 영상을 실시간으로 보고 있음
 
+---
+
 ## 🏅 DBMS 구성도
 ![ERD drawio](https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/104709955/e7916564-5a40-4a7f-9cbb-9a284ca5601b)
 
@@ -171,10 +220,12 @@ actionType : 고객이 과일을 사기 위한 4가지 타입의 행동을 정�
 
 mistmatchActionStand : 고객이 사간 과일과 매대에서 사라진 과일의 종류와 개수가 다를 때 정보를 알기 위해 각 정보를 저장하는 테이블
 
+---
 
 ## 🏁 발표 자료 링크
 https://docs.google.com/presentation/d/1L9lDK6GptjHDVC1pk5et46PFg5JRmc-w_r4A61HhIeM/edit#slide=id.g263d5bba2a3_0_5
 
+---
 
 ## ⚙️ 개발 환경 설정
 
