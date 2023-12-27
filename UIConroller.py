@@ -8,8 +8,8 @@ import cv2
 import time
 import re
 import time
-from  Database import DB
-from ImageReceiver import ImageReceiver
+from  utils.Database import DB
+from utils.ImageReceiver import ImageReceiver
 
 from_class = uic.loadUiType("UI.ui")[0]
 
