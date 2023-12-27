@@ -4,12 +4,12 @@
 ---
 ## Index
 - [📖 프로젝트 개요](#📖-프로젝트-개요)
-- [🥇 시스템 구성](#🥇-시스템-구성)
-  - [기능 리스트](#기능-리스트)
 - [👨‍👧‍👦 팀원 및 역할](#👨‍👧‍👦-팀원-및-역할)
 - [📆 프로젝트 기간](#📆-프로젝트-기간)
 - [🎯 기술 스택](#🎯-기술-스택)
 - [🥇 프로젝트 소개](#🥇-프로젝트-소개)
+  - [🥇 시스템 구성](#🥇-시스템-구성)
+  - [기능 리스트](#기능-리스트)
   - [USE CASE Diagram](#use-case-diagram)
   - [Sequence Diagram](#sequence-diagram)
 - [🧠 딥러닝 인식 시스템](#🧠-딥러닝-인식-시스템)
@@ -26,30 +26,6 @@
 
 ## 📖 프로젝트 개요
 딥러닝 기반의 행동 인식 및 객체 인식 모델을 사용하여 매장에 입장한 고객이 별도의 계산 절차 없이 물건을 구매하고, 관리자는 GUI를 통해 출입 상태, 재고 상태 등을 확인할 수 있는 시스템
-
----
-
-## 🥇 시스템 구성
-<p align="center">
-  <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/de7222e0-8f16-41d1-b555-d392aa396d1d" width="80%" style="float:left"/>
-</p>
-
-### 기능 리스트
-- **매장 내 영상 인식 시스템**
-  - Action Recognition Program : 카메라 영상으로부터 고객의 구매 행동을 인식
-  - Stand Counter Program : 카메라 영상으로부터 매대 위의 상품 수량을 카운트
-
-- **중앙 시스템**
-  - 통신 : ROS Bridge Server의 Topic을 Subscribe하여 Cam 영상 및 데이터 수신
-  - Main : 매장 내 영상 인식 시스템의 인식 결과를 취합하여 처리
-  - DB : 매장 이용 기록, 시스템 로그 저장
-  - File storage : CCTV 영상을 저장
-
-- **사용자**
-  - System GUI : 관리자가 매장 상태, 구매 기록, 재고 상태 등을 조회
-  - CCTV Viewer : CCTV 영상 조회
-
----
 
 ## 👨‍👧‍👦 팀원 및 역할
 |구 분|이 름|역 할|
@@ -72,15 +48,35 @@
 |딥러닝|<img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=PyTorch&logoColor=white"> <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=OpenCV&logoColor=white">|DB|<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white">|
 |GUI|<img src="https://img.shields.io/badge/Qt-41CD52?style=for-the-badge&logo=Qt&logoColor=white">|통신|![ROS2](https://img.shields.io/badge/ROS2-22314E?style=for-the-badge&logo=ROS&logoColor=white)|
 |커뮤니케이션|![Jira](https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white) ![Confluence](https://img.shields.io/badge/Confluence-172B4D?style=for-the-badge&logo=Confluence&logoColor=white) ![Slack](https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)|
-
 ---
 
 ## 🥇 프로젝트 소개 
+
+### 🥇 시스템 구성
+<p align="center">
+  <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/de7222e0-8f16-41d1-b555-d392aa396d1d" width="80%" style="float:left"/>
+</p>
+
+### 기능 리스트
+- **매장 내 영상 인식 시스템**
+  - Action Recognition Program : 카메라 영상으로부터 고객의 구매 행동을 인식
+  - Stand Counter Program : 카메라 영상으로부터 매대 위의 상품 수량을 카운트
+
+- **중앙 시스템**
+  - 통신 : ROS Bridge Server의 Topic을 Subscribe하여 Cam 영상 및 데이터 수신
+  - Main : 매장 내 영상 인식 시스템의 인식 결과를 취합하여 처리
+  - DB : 매장 이용 기록, 시스템 로그 저장
+  - File storage : CCTV 영상을 저장
+
+- **사용자**
+  - System GUI : 관리자가 매장 상태, 구매 기록, 재고 상태 등을 조회
+  - CCTV Viewer : CCTV 영상 조회
+
+
 ### USE CASE Diagram
 <p align="center">
   <img src="https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/61872888/ed9649ac-6de4-4751-8814-f932d642550c" width="90%" style="float:left">
 </p>
-
 
 ### Sequence Diagram
 - **출입 시나리오**
