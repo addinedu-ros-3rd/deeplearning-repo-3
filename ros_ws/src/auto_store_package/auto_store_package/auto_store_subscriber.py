@@ -2,7 +2,6 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 
-from cv_bridge import CvBridge
 from auto_store_package_msgs.msg import ImgNData
 
 import numpy as np
@@ -14,8 +13,6 @@ from modules.status import Status
 from modules.customer import Customer
 from modules.read_rfid import *
 
-# 이미지 메시지 데이터를 어레이 형태로 변환
-bridge = CvBridge() 
 
 action_data = None
 stand_data = None

@@ -3,13 +3,9 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5 import uic
 import sys
-import datetime
 import cv2
-import time
-import re
-import time
-from  Database import DB
-from ImageReceiver import ImageReceiver
+from utils.Database import DB
+from utils.ImageReceiver import ImageReceiver
 
 from_class = uic.loadUiType("UI.ui")[0]
 
@@ -44,7 +40,7 @@ class WindowClass(QMainWindow, from_class) :
         self.pixmap = QPixmap()
         
         # self.player = ImageReceiver(filename=file[0], framerate=20)
-        self.player = ImageReceiver()
+        self.player = ImageReceiver(host='localhost', port=9090)
         self.player.daemon = True
         self.player.running = True
         self.player.update.connect(self.updatePlayer)

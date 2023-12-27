@@ -1,10 +1,8 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
 import cv2
 
-bridge = CvBridge()
 
 class camPublisher(Node) :
   def __init__(self) :
@@ -15,15 +13,15 @@ class camPublisher(Node) :
     self.cap = cv2.VideoCapture('http://IP address:4747/video') 
     # IP address 자리에 본인 ip 주소 입력
 
-  def time_callback(self) :
-    ret, frame = self.cap.read()
-    cv2.imwrite('test.jpg', frame)
-    if ret == True :
-      fra = bridge.cv2_to_imgmsg(frame)
-      self.publisher.publish(fra)
-      cv2.imshow('droidcamframe', frame)
-      cv2.waitKey(2)
-    self.get_logger().info('Publishing Droidcam Image')
+  # def time_callback(self) :
+  #   ret, frame = self.cap.read()
+  #   cv2.imwrite('test.jpg', frame)
+  #   if ret == True :
+  #     fra = bridge.cv2_to_imgmsg(frame)
+  #     self.publisher.publish(fra)
+  #     cv2.imshow('droidcamframe', frame)
+  #     cv2.waitKey(2)
+  #   self.get_logger().info('Publishing Droidcam Image')
 
 
 def main(args=None) :

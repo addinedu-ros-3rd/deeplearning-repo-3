@@ -4,11 +4,6 @@ from rclpy.qos import QoSProfile
 from auto_store_package_msgs.msg import ImgNData
 import numpy as np
 import cv2
-from cv_bridge import CvBridge
-import base64
-
-# 이미지 메시지 데이터를 어레이 형태로 변환
-bridge = CvBridge() 
 
 class ImageSubscriber(Node) :
   def __init__(self) :
