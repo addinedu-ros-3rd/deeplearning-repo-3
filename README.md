@@ -1,6 +1,25 @@
-# deeplearning-repo-3
-
 # 딥러닝 기반의 무인 매장 시스템
+---
+## Index
+- [📖 프로젝트 개요](#📖-프로젝트-개요)
+- [🥇 시스템 구성](#🥇-시스템-구성)
+  - [기능 리스트](#기능-리스트)
+- [👨‍👧‍👦 팀원 및 역할](#👨‍👧‍👦-팀원-및-역할)
+- [📆 프로젝트 기간](#📆-프로젝트-기간)
+- [🎯 기술 스택](#🎯-기술-스택)
+- [🥇 프로젝트 소개](#🥇-프로젝트-소개)
+  - [USE CASE Diagram](#use-case-diagram)
+  - [Sequence Diagram](#sequence-diagram)
+- [딥러닝 인식 시스템](#딥러닝-인식-시스템)
+- [통신 모듈](#통신-모듈)
+- [🖌️ GUI](#🖌️-gui)
+  - [GUI 설명](#gui-설명)
+  - [GUI 사용 방법](#gui-사용-방법)
+- [🏅 DBMS 구성도](#🏅-dbms-구성도)
+- [DB 테이블 기능](#db-테이블-기능)
+- [🏁 발표 자료 링크](#🏁-발표-자료-링크)
+- [⚙️개발 환경 설정](#⚙️-개발-환경-설정)
+---
 ## 📖 프로젝트 개요
 딥러닝 기반의 행동 인식 및 객체 인식 모델을 사용하여 매장에 입장한 고객이 별도의 계산 절차 없이 물건을 구매하고, 관리자는 GUI를 통해 출입 상태, 재고 상태 등을 확인할 수 있는 시스템
 
@@ -32,7 +51,7 @@
 |팀장|김준표|딥러닝 기반 고객 행동 인식 모델 학습 및 Test(Rule-based), 시스템 하드웨어 구성도 제작(일부), roslibpy 기반 영상 이미지 통신 및 PyQt 출력(일부)|
 |팀원|강한얼|객체 인식 모델 YOLOv8 학습, 딥러닝 기반 고객 행동 인식 모델 학습, 중앙 시스템 Main 함수 설계, 시스템 구성도 / Use case/ Sequence diagram 제작|
 |팀원|조태상|매대의 과일 종류별 수량 인식 딥러닝 모델(일부), 시스템 데이터 저장을 위한 DB 개발, 관리자 시스템 GUI 개발
-|팀원|조홍기|매대의 과일 종류별 수량 인식 딥러닝 모델 개발(전체), 무인 매장 시스템 - 중앙 관리 시스템간 통신 모듈 개발|
+|팀원|조홍기|매대의 과일 종류별 수량 인식 딥러닝 모델 개발(전체), 무인 매장 시스템 - 중앙 관리 시스템간 통신 모듈 개발, 전체 시스템 통합|
 |팀원|최규호|시스템 데이터 저장을 위한 DB 개발|
 
 
@@ -74,6 +93,7 @@
 ## 딥러닝 인식 시스템
 
 ## 통신 모듈
+
 
 ## 🖌️ GUI
 <p align="center">
@@ -143,30 +163,26 @@ mistmatchActionStand : 고객이 사간 과일과 매대에서 사라진 과일�
 https://docs.google.com/presentation/d/1L9lDK6GptjHDVC1pk5et46PFg5JRmc-w_r4A61HhIeM/edit#slide=id.g263d5bba2a3_0_5
 
 
-## 개발 환경 설정
+## ⚙️ 개발 환경 설정
 
+OS : Ubuntu 22.04
 
+> __Main PC__
+  1. install pytorch 2.1.1 (https://pytorch.org/get-started/previous-versions/)
+  2. pip install -r requirements/main_requirements.txt
+  3. install ros2 humble (https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html)
+  4. sudo apt-get install ros-humble-rosbridge-server 
+  5. cd ros_ws
+  6. source /opt/ros/humble/setup.bash
+  7. colcon build
+  8. source install/local_setup.bash
+  9. 중앙 PC (cmd 1) -> ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+  10. 중앙 PC (cmd 2) -> ros2 run auto_store_package auto_store_subscriber
 
-> Main 시스템
-Ubuntu 22.04
-ROS2 Humble
-    1. install ros2 humble
-https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
-    2. sudo apt-get install ros-humble-rosbridge-server
-    3. cd ros_ws
-    4. source /opt/ros/humble/setup.bash
-    5. colcon build
-    6. source install/local_setup.bash
-    7. 중앙 PC (cmd 1) -> ros2 launch rosbridge_server rosbridge_websocket_launch.xml
-    8. 중앙 PC (cmd 2) -> ros2 run auto_store_package auto_store_subscriber
-    9. 관제 PC -> python3  
-install pytorch 2.1.1
+> __관제 PC__
+  1. pip install -r requirements/control_requirements.txt
+  2. python3 UIController.py
 
-> 전체 python requirements
-    numpy
-    opencv-python
-    roslibpy
-    torch = 
-    mysql-connector-python==4.8.1.78
-    PyQt5==5.14.2
-    PyQt5-sip
+> __Cam__
+  1. pip install -r requirements/cam_requirements.txt
+  2. python3 -m main main.py

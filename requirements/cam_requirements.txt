@@ -52,9 +52,9 @@ sounddevice==0.4.6
 supervision==0.2.1
 sympy==1.12
 thop==0.1.1.post2209072238
-torch==2.1.1+cu118
-torchaudio==2.1.1+cu118
-torchvision==0.16.1+cu118
+# torch==2.1.1+cu118
+# torchaudio==2.1.1+cu118
+# torchvision==0.16.1+cu118
 tqdm==4.66.1
 triton==2.1.0
 Twisted==23.10.0
