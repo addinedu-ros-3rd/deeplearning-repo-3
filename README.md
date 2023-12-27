@@ -1,6 +1,6 @@
 # 딥러닝 기반의 무인 매장 시스템
 
-![](https://drive.google.com/file/d/1FJfazh3FWGd8-XIraMB9AlwlfaSfHqlv/view?usp=drive_link)
+![](images/deeplearning_README_demo.gif)
 ---
 ## Index
 - [📖 프로젝트 개요](#📖-프로젝트-개요)
