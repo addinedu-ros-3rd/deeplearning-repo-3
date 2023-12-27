@@ -102,7 +102,7 @@
 
 ## 🧠 딥러닝 인식 시스템
 - 매장 내 고객 구매 행동 인식
-- 매대 위 상품 카운트하여 재고 파악 및 구매 결과를 더블 체크
+- 매대 위 상품 카운트하여 재고 파악
 
 ### 구매 행동 인식 모델
 #### 수행 태스크
@@ -110,34 +110,34 @@
   - Task 2 : 집은 상품 인식
 
 #### 모델 선택
-아래 3가지 Model architecture를 설계하여 가장 높은 성능을 보이는 **Separated inference model**을 선택
+아래 3가지 Model architecture를 설계하여 가장 높은 성능을 보이는 **Separated inference model**을 선택 [세부 설명 (URL)]
 - Rule-basd model
 - Multi-task model
 - Separated-inference model
 
-Model architecture 설계 및 성능 비교 세부 설명 (URL)
-
-#### Separated inference model
-1. Model architecture
+#### Separated-inference model architecture
 <p align="center">
-  <img src="images/dl_model_architecture.png" width="80%" style="float:left">
+  <img src="https://github.com/addinedu-ros-3rd/deeplearning-repo-3/assets/61872888/33b39051-fc54-4fc9-9a97-ed2ed1a74342" width="70%" style="float:left">
 </p>
 
-2. Components
-  - Human pose estimation model : Mediapipe (pre-trained)
-  - Object detection model : YOLOv8 (from scratch)
-  - Action recognition model : LSTM (from scratch)
-  - CNN model : MobileNet-V3 (from scratch)
+#### Inference
+- 행동 인식
+  - 카메라 영상을 입력으로 받음
+  - Human pose estimation model, object detection model을 통해 관절 key points 좌표와 상품 좌표를 추출
+  - 추출된 좌표 값들을 action recognition model인 LSTM의 input으로 사용
+  - 50 frame(sequence length of LSTM)이 마다 고객 행동을 예측
+    
+- 집은 상품 인식
+  - 예측된 행동이 "Holding"이면 마지막 프래임(이미지)을 CNN의 입력으로 사용
+  - CNN을 통해 고객이 집은 상품을 인식
 
-3. Inference
-  - 행동 인식
-    - 카메라 영상을 입력으로 받음
-    - Human pose estimation model, object detection model을 통해 관절 key points - 좌표와 상품 좌표를 추출
-    - 추출된 좌표 값들을 action recognition model인 LSTM의 input으로 사용
-    - 50 frame(sequence length of LSTM)이 마다 고객 행동을 예측
-  - 집은 상품 인식
-    - 예측된 행동이 "Holding"이면 마지막 프래임을 고객이 집은 상품을 인식(분류) CNN의 input으로 사용
-    - CNN을 통해 고객이 집은 상품을 인식
+#### Components
+|Components|Model|Training|
+|------|------|------|
+|Human pose estimation model|Mediapipe|Pre-trained|
+|Object detection model|YOLOv8|From scratch|
+|Action recognition model|LSTM|From scratch|
+|CNN model|MobileNet-V3|From scratch|
 
 
 
