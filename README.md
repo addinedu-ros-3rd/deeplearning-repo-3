@@ -8,7 +8,7 @@
 
 ## 🥇 시스템 구성
 <p align="center">
-  <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/de7222e0-8f16-41d1-b555-d392aa396d1d" width="80%" style="float:left">
+  <img src="https://github.com/addinedu-ros-3rd/iot-repo-2/assets/61872888/de7222e0-8f16-41d1-b555-d392aa396d1d" width="80%" style="float:left"/>
 </p>
 
 
@@ -132,15 +132,16 @@ https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
     4. source /opt/ros/humble/setup.bash
     5. colcon build
     6. source install/local_setup.bash
-    7. cmd 1 -> ros2 launch rosbridge_server rosbridge_websocket_launch.xml
-    8. cmd 2 -> ros2 run auto_store_package auto_store_subscriber
-
+    7. 중앙 PC (cmd 1) -> ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+    8. 중앙 PC (cmd 2) -> ros2 run auto_store_package auto_store_subscriber
+    9. 관제 PC -> python3  
+install pytorch 2.1.1
 
 > 전체 python requirements
     numpy
     opencv-python
     roslibpy
-    torch
-    mysql-connector-python
+    torch = 
+    mysql-connector-python==4.8.1.78
     PyQt5==5.14.2
     PyQt5-sip
