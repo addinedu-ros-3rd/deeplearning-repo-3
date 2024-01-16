@@ -112,7 +112,7 @@
   - Task 2 : 집은 상품 인식
 
 #### 모델 선택
-아래 3가지 Model architecture를 설계하여 가장 높은 성능을 보이는 **Separated inference model**을 선택 [세부 설명 (URL)]
+아래 3가지 Model architecture를 설계하여 가장 높은 성능을 보이는 **Separated inference model**을 선택
 - Rule-basd model
 - Multi-task model
 - Separated-inference model
